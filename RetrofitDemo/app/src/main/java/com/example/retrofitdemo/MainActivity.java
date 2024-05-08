@@ -4,44 +4,48 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    UserControlerRESTAPI restapi;
-    Users users;
+    private RecyclerView recyclerView;
+    private UserAdapter userAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-    }
+        recyclerView = findViewById(R.id.recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-    public void LoadUsers(View view) {
-        restapi = new UserControlerRESTAPI();
-        restapi.start();
-    }
+        userAdapter = new UserAdapter(new ArrayList<>());
+        recyclerView.setAdapter(userAdapter);
 
-    public void DisplayUsers(View view) {
-        TextView tv = findViewById(R.id.tv);
-        if(restapi !=null){
-            users = restapi.getUsers();
-            if (users !=null){
-                tv.setText("Users Count : "+ users.data.size()+"\n"+
-                        users.data.toString());
-                tv.setMovementMethod(new ScrollingMovementMethod());
+        UserControlerRESTAPI userControlerRESTAPI = new UserControlerRESTAPI();
+        userControlerRESTAPI.start();
+        userControlerRESTAPI.setCallback(new UserControlerRESTAPI.Callback() {
+            @Override
+            public void onUsersReceived(List<User> users) {
+                userAdapter.setUserList(users);
             }
-            else {
-                tv.setText("Empty List");
-            }
-        }else {
-            tv.setText("Users Not Loaded");
-        }
+
+            @Override
+            public void onFailure(Throwable t) {
+                    Toast.makeText(MainActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+        });
     }
 }
