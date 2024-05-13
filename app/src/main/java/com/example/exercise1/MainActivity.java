@@ -1,33 +1,38 @@
 package com.example.exercise1;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import android.os.Bundle;
+import android.util.Log;
+
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
+        // Initialize Firebase
+        FirebaseApp.initializeApp(this);
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        myRef.setValue("Hello, World!");
+        // Example of saving user data
+        saveUserData("unique_user_id", "John Doe", "john@example.com");
     }
 
+    private void saveUserData(String userId, String name, String email) {
+        DatabaseReference usersRef = mDatabase.child("users").child(userId);
+        usersRef.child("name").setValue(name);
+        usersRef.child("email").setValue(email);
+        Log.d("MainActivity", "User " + userId + " saved successfully.");
+    }
 }
