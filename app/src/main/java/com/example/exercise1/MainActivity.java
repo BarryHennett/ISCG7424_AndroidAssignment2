@@ -1,38 +1,65 @@
 package com.example.exercise1;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
-
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
+    private EditText editTextName, editTextEmail, editTextPassword, editTextAge;
+    private Button buttonSave;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize Firebase
-        FirebaseApp.initializeApp(this);
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        // Get references to UI elements
+        editTextName = findViewById(R.id.editTextName);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
+        editTextAge = findViewById(R.id.editTextAge);
+        buttonSave = findViewById(R.id.buttonSave);
 
-        // Example of saving user data
-        saveUserData("unique_user_id", "John Doe", "john@example.com");
+        // Set the save button click listener
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = editTextName.getText().toString();
+                String email = editTextEmail.getText().toString();
+                String password = editTextPassword.getText().toString();
+                String ageText = editTextAge.getText().toString();
+
+                if (name.isEmpty() || email.isEmpty() || password.isEmpty() || ageText.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                int age = Integer.parseInt(ageText);
+
+                // Get a reference to the Firebase Realtime Database
+                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
+                // Save user data
+                saveUser(database, name, email, password, age);
+            }
+        });
     }
 
-    private void saveUserData(String userId, String name, String email) {
-        DatabaseReference usersRef = mDatabase.child("users").child(userId);
+    private void saveUser(DatabaseReference ref, String name, String email, String password, int age) {
+        DatabaseReference usersRef = ref.child("users").push(); // Automatically generates a unique key
         usersRef.child("name").setValue(name);
         usersRef.child("email").setValue(email);
-        Log.d("MainActivity", "User " + userId + " saved successfully.");
+        usersRef.child("password").setValue(password);
+        usersRef.child("age").setValue(age);
+
+        String userId = usersRef.getKey(); // Get the unique key
+        Toast.makeText(MainActivity.this, "User " + userId + " saved successfully.", Toast.LENGTH_SHORT).show();
     }
 }
