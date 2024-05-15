@@ -1,1 +1,0 @@
-# ISCG7424_AndroidAssignment2
