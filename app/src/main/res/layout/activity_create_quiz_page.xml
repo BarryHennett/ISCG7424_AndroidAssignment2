@@ -19,15 +19,15 @@
 
 
     <EditText
+
         android:background="@drawable/edittext"
         android:id="@+id/editTextName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
         android:hint="Enter your name"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="15dp" />
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        />
 
 
 
@@ -41,10 +41,12 @@
         app:boxBackgroundColor="#FFFFFF">
 
         <AutoCompleteTextView
+            android:background="@drawable/edittext"
             android:id="@+id/autoCompleteCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none" />
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:inputType="none"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -60,12 +62,11 @@
 
         <AutoCompleteTextView
             android:id="@+id/autoCompleteDifficulty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:background="@drawable/edittext"
+            android:layout_width="350dp"
+            android:layout_height="50dp"
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
-
-
 
 
         <DatePicker
