@@ -8,21 +8,44 @@
     android:orientation="vertical"
     tools:context=".UserPage">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/user_btn_return"
-        style="?attr/floatingActionButtonSmallStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="50dp"
-        app:srcCompat="@drawable/btn_return" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/userbtnreturn"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Return"
+            />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/userbtnsignout"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Out"
+            android:layout_gravity="end" />
+
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/user_txt_name"
+            android:id="@+id/usernametxt"
             style="@style/TextAppearance.MaterialComponents.Headline4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,33 +54,10 @@
             android:text="Hi User"
             android:textColor="#FFFFFF" />
 
-        <Button
-            android:id="@+id/user_btn_edit"
-            style="?attr/materialIconButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:background="@android:color/transparent"
-            android:insetLeft="0dp"
-            android:insetTop="0dp"
-            android:insetRight="0dp"
-            android:insetBottom="0dp"
-            android:padding="0dp"
-            app:icon="@drawable/btn_edit"
-            app:iconTint="?attr/colorPrimary" />
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/user_btn_sign_out"
-        style="@style/Widget.Material3.Button.ElevatedButton"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:text="Sign Out"
-        android:textSize="20dp"
-        app:iconGravity="textEnd"
-        app:iconSize="50dp" />
+
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/user_tab"
