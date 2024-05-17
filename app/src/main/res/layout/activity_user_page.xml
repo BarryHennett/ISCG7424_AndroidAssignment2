@@ -42,16 +42,17 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
         <TextView
             android:id="@+id/usernametxt"
             style="@style/TextAppearance.MaterialComponents.Headline4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="135dp"
             android:layout_gravity="center"
-            android:text="Hi User"
+            android:text="User"
             android:textColor="#FFFFFF" />
 
 
@@ -64,7 +65,9 @@
         android:layout_width="370dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="30dp"
+        android:background="@drawable/edittext"
+        >
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -84,12 +87,12 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Past" />
+            android:text="Previous" />
 
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/user_recycler"
+        android:id="@+id/recyclerviewuser"
         android:layout_width="370dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

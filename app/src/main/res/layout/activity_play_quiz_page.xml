@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="Ready Go"
+        android:text="Start!"
         android:id="@+id/play_quiz_txt_title"
         android:layout_marginTop="40dp"
         android:textColor="#FFFFFF" />
