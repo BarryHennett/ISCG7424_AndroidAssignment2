@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "933806348588",
+    "project_id": "iscg7427assignment2",
+    "storage_bucket": "iscg7427assignment2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:933806348588:android:f02a7fc6275ac2e627b489",
+        "android_client_info": {
+          "package_name": "com.example.quizappassignment2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwy0WMTGOCxHun1rETw4nvihFgkA3afZ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

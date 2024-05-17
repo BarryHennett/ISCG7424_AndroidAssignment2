@@ -14,3 +14,5 @@ public class AdminPage extends AppCompatActivity {
         setContentView(R.layout.activity_admin_page);
     }
 }
+
+// API LINK: https://opentdb.com/api.php?amount=10
