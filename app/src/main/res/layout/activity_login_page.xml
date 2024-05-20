@@ -14,10 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:text="Log In"
+        android:text="Log In / Sign up"
         android:textColor="#FFFFFF" />
-
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/login_txt_email"
@@ -28,7 +26,7 @@
         android:layout_marginTop="100dp"
         android:hint="Email"
         android:textColorHint="#FF000000"
-        app:boxBackgroundColor="#FFFFFF"
+        app:boxBackgroundColor="@color/white"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
         app:startIconTint="@color/white">
@@ -49,7 +47,7 @@
         android:layout_marginTop="20dp"
         android:hint="Password"
         android:textColorHint="#FF000000"
-        app:boxBackgroundColor="#FFFFFF"
+        app:boxBackgroundColor="@color/white"
         app:endIconMode="password_toggle"
         app:errorEnabled="true"
         app:startIconTint="@color/white">
@@ -72,8 +70,6 @@
         android:textSize="20dp"
         app:iconGravity="textEnd"
         app:iconSize="50dp" />
-
-
 
     <Button
         android:id="@+id/login_btn_sign_up"

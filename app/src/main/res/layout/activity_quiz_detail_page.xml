@@ -16,6 +16,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center_vertical">
 
         <Button
@@ -28,18 +29,21 @@
 
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="center_horizontal">
 
         <TextView
-            style="@style/TextAppearance.MaterialComponents.Headline4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:text="Quiz Detail"
-            android:textColor="#FFFFFF" />
+            android:layout_marginStart="80dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Quiz Details"
+            android:textColor="#FFFFFF"
+            android:textSize="40sp" />
 
 
     </LinearLayout>
@@ -49,25 +53,27 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                style="@style/TextAppearance.Material3.TitleMedium"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Name:" />
+                android:text="Name:"
+                android:textColor="#FFFFFF"/>
 
             <TextView
-                android:id="@+id/quiz_detail_txt_name"
-                style="@style/TextAppearance.Material3.BodyMedium"
+                android:id="@+id/txtnamequizdetailquizdetail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Name" />
+                android:text="Name"
+                android:textColor="#FFFFFF"/>
         </LinearLayout>
 
         <LinearLayout
@@ -76,18 +82,18 @@
             android:layout_marginTop="10dp">
 
             <TextView
-                style="@style/TextAppearance.Material3.TitleMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:width="100dp"
-                android:text="Category:" />
+                android:text="Category:"
+                android:textColor="#FFFFFF"/>
 
             <TextView
-                android:id="@+id/quiz_detail_txt_category"
-                style="@style/TextAppearance.Material3.BodyMedium"
+                android:id="@+id/txtcategoryquizdetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Category" />
+                android:text="Category"
+                android:textColor="#FFFFFF"/>
         </LinearLayout>
 
         <LinearLayout
@@ -97,72 +103,76 @@
             android:layout_marginTop="10dp">
 
             <TextView
-                android:id="@+id/quiz_detail_txt_difficulty"
-                style="@style/TextAppearance.Material3.BodyMedium"
-                android:layout_width="0dp"
+                android:id="@+id/difficultyquizdetail"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Difficulty" />
+                android:width="100dp"
+                android:text="Difficulty:"
+                android:textColor="#FFFFFF"/>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end|center_vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/img_like" />
-
-                <TextView
-                    android:id="@+id/quiz_detail_txt_like"
-                    style="@style/TextAppearance.Material3.TitleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="10" />
-            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginTop="10dp">
+            <TextView
+                android:id="@+id/likequizdetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Likes:"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:id="@+id/likeamtquizdetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="10"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            >
 
             <TextView
                 android:id="@+id/quiz_detail_txt_start_date"
-                style="@style/TextAppearance.Material3.BodyMedium"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Start Date" />
+                android:width="100dp"
+                android:text="Start Date"
+                android:textColor="#FFFFFF"/>
 
             <TextView
                 android:id="@+id/quiz_detail_txt_end_date"
-                style="@style/TextAppearance.Material3.BodyMedium"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_gravity="end"
+                android:width="100dp"
                 android:gravity="end"
-                android:text="End Date" />
+                android:text="End Date"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
+
+        <TextView
+            android:textSize="30sp"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:textAlignment="center"
+            android:text="Questions"
+            android:textColor="#FFFFFF" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/quiz_detail_recycler"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp" />
     </LinearLayout>
-
-    <TextView
-        style="@style/TextAppearance.Material3.HeadlineSmall"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:text="Questions"
-        android:textColor="#FFFFFF" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/quiz_detail_recycler"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp" />
 </LinearLayout>

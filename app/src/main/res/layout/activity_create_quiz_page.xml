@@ -21,7 +21,7 @@
     <EditText
 
         android:background="@drawable/edittext"
-        android:id="@+id/editTextName"
+        android:id="@+id/editTextnamecreatequiz"
         android:layout_width="350dp"
         android:layout_height="50dp"
         android:hint="Enter your name"
@@ -29,54 +29,58 @@
         android:layout_marginTop="15dp"
         />
 
-
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/create_quiz_txt_category"
-        android:layout_width="350dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:hint="Category"
-        app:boxBackgroundColor="#FFFFFF">
+        android:layout_margin="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/categorycreatequiz"
+        android:background="@drawable/edittext"
+        >
 
         <AutoCompleteTextView
-            android:background="@drawable/edittext"
             android:id="@+id/autoCompleteCategory"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
+            android:layout_width="358dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Select Category"
             android:inputType="none"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
-
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/create_quiz_txt_difficulty"
-        android:layout_width="350dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:hint="Difficulty"
-        app:boxBackgroundColor="#FFFFFF">
-
+        android:layout_margin="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/difficultycreatequiz"
+        android:background="@drawable/edittext"
+        >
         <AutoCompleteTextView
-            android:id="@+id/autoCompleteDifficulty"
-            android:background="@drawable/edittext"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:inputType="none" />
+            android:id="@+id/difficultycreatequiz"
+            android:layout_width="358dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Select Difficulty"
+            android:inputType="none"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
-
         <DatePicker
+            android:id="@+id/datecreatequiz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="15dp" />
 
     <Button
-        android:id="@+id/create_quiz_btn_create"
+        android:id="@+id/makebtncreatequiz"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -87,7 +91,7 @@
         app:iconSize="50dp" />
 
     <Button
-        android:id="@+id/create_quiz_btn_cancel"
+        android:id="@+id/cancelcreatequiz"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
