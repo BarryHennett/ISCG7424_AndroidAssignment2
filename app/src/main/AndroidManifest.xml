@@ -25,10 +25,12 @@
             android:name=".AdminPage"
             android:exported="false" />
         <activity
-            android:name=".UserPage"
+            android:name=".CreateQuizPage"
+
             android:exported="false" />
         <activity
-            android:name=".CreateQuizPage"
+            android:name=".UserPage"
+
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

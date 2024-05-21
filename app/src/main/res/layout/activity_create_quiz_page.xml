@@ -1,76 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/backgroundimg"
-    android:orientation="vertical"
-    tools:context=".CreateQuizPage">
+    android:fillViewport="true"
+    android:padding="16dp">
 
-    <TextView
-        style="@style/TextAppearance.MaterialComponents.Headline4"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:text="Create Quiz"
-        android:textColor="#FFFFFF" />
+        android:orientation="vertical">
 
-
-    <EditText
-
-        android:background="@drawable/edittext"
-        android:id="@+id/editTextnamecreatequiz"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:hint="Enter your name"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        />
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/categorycreatequiz"
-        android:background="@drawable/edittext"
-        >
-
-        <AutoCompleteTextView
-            android:id="@+id/autoCompleteCategory"
-            android:layout_width="358dp"
+        <TextView
+            style="@style/TextAppearance.MaterialComponents.Headline4"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Select Category"
-            android:inputType="none"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:text="Create Quiz"
+            android:textColor="#FFFFFF" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/difficultycreatequiz"
-        android:background="@drawable/edittext"
-        >
-        <AutoCompleteTextView
-            android:id="@+id/autoCompleteDifficulty"
-            android:layout_width="358dp"
+
+        <EditText
+            android:id="@+id/editTextnamecreatequiz"
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/edittext"
+            android:hint="Enter your name" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:id="@+id/categorycreatequiz"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Select Difficulty"
-            android:inputType="none"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_margin="20dp"
+            android:background="@drawable/edittext">
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteCategory"
+                android:layout_width="358dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Select Category"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:id="@+id/difficultycreatequiz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/edittext">
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteDifficulty"
+                android:layout_width="358dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Select Difficulty"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <DatePicker
             android:id="@+id/datecreatequiz"
@@ -79,25 +73,27 @@
             android:layout_gravity="center"
             android:layout_marginTop="15dp" />
 
-    <Button
-        android:id="@+id/makebtncreatequiz"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:text="Create"
-        android:textSize="20dp"
-        app:iconGravity="textEnd"
-        app:iconSize="50dp" />
+        <Button
+            android:id="@+id/makebtncreatequiz"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:text="Create"
+            android:textSize="20dp"
+            app:iconGravity="textEnd"
+            app:iconSize="50dp" />
 
-    <Button
-        android:id="@+id/cancelcreatequiz"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:text="Cancel"
-        android:textSize="20dp"
-        app:iconGravity="textEnd"
-        app:iconSize="50dp" />
-</LinearLayout>
+        <Button
+            android:id="@+id/cancelcreatequiz"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:text="Cancel"
+            android:textSize="20dp"
+            app:iconGravity="textEnd"
+            app:iconSize="50dp" />
+
+    </LinearLayout>
+</ScrollView>
