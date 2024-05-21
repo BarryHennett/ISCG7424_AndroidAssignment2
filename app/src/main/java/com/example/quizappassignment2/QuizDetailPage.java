@@ -50,7 +50,7 @@ public class QuizDetailPage extends AppCompatActivity {
 
     private void fetchQuizDetails(String quizId) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://your-backend-url.com") // Replace with your actual backend URL
+                .baseUrl("https://iscg7427assignment2-default-rtdb.firebaseio.com/") // Replace with your actual backend URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

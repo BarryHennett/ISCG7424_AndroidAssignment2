@@ -63,7 +63,7 @@
         android:background="@drawable/edittext"
         >
         <AutoCompleteTextView
-            android:id="@+id/difficultycreatequiz"
+            android:id="@+id/autoCompleteDifficulty"
             android:layout_width="358dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
