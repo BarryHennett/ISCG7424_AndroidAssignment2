@@ -17,26 +17,17 @@
         android:text="Log In / Sign up"
         android:textColor="#FFFFFF" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/login_txt_email"
-        style="?attr/textInputFilledStyle"
+    <EditText
+        android:id="@+id/editTextemail"
         android:layout_width="350dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_marginTop="100dp"
-        android:hint="Email"
+        android:layout_marginTop="15dp"
         android:textColorHint="#FF000000"
-        app:boxBackgroundColor="@color/white"
-        app:endIconMode="clear_text"
-        app:errorEnabled="true"
-        app:startIconTint="@color/white">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress" />
+        android:background="@drawable/edittext"
+        android:hint="Enter your Email" />
 
-    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/login_txt_password"

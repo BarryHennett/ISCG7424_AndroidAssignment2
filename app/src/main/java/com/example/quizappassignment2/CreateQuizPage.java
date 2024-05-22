@@ -1,21 +1,27 @@
 package com.example.quizappassignment2;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,15 +29,15 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 
-public class CreateQuizPage extends AppCompatActivity {
+public class CreateQuizPage extends AppCompatActivity implements DateRangePickerDialog.OnDateRangeSelectedListener {
 
     private EditText editTextName;
     private TextInputLayout categoryInput, difficultyInput;
     private AutoCompleteTextView categoryDropdown, difficultyDropdown;
-    private Button createButton, cancelButton;
+    private Button createButton, cancelButton, btnSelectStart, btnSelectEnd;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference quizzesReference;
-    private DatePicker datePicker;
+    private DateRangePickerDialog dateRangePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +55,8 @@ public class CreateQuizPage extends AppCompatActivity {
         difficultyDropdown = findViewById(R.id.autoCompleteDifficulty);
         createButton = findViewById(R.id.makebtncreatequiz);
         cancelButton = findViewById(R.id.cancelcreatequiz);
-        datePicker = findViewById(R.id.datecreatequiz);
+        btnSelectStart = findViewById(R.id.btnSelectStart);
+        btnSelectEnd = findViewById(R.id.btnSelectEnd);
 
         setupDifficultyDropdown();
         fetchCategoriesFromApi();
@@ -65,6 +72,25 @@ public class CreateQuizPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        // Initialize and set up the date range picker dialog
+        dateRangePickerDialog = new DateRangePickerDialog(this);
+        dateRangePickerDialog.setOnDateRangeSelectedListener(this);
+
+        // Set click listeners for the date range selection buttons
+        btnSelectStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateRangePickerDialog.show();
+            }
+        });
+
+        btnSelectEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateRangePickerDialog.show();
             }
         });
     }
@@ -108,62 +134,83 @@ public class CreateQuizPage extends AppCompatActivity {
         categoryDropdown.setAdapter(adapter);
     }
 
+    @Override
+    public void onStartDateSelected(Date startDate) {
+        // Handle start date selection
+        // You can display the selected start date or perform any other action
+        Toast.makeText(this, "Start Date: " + startDate.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEndDateSelected(Date endDate) {
+        // Handle end date selection
+        // You can display the selected end date or perform any other action
+        Toast.makeText(this, "End Date: " + endDate.toString(), Toast.LENGTH_SHORT).show();
+    }
     private void createQuiz() {
         String name = editTextName.getText().toString();
         String category = categoryDropdown.getText().toString();
         String difficulty = difficultyDropdown.getText().toString();
 
-        // Get the selected date from DatePicker
-        int year = datePicker.getYear();
-        int month = datePicker.getMonth();
-        int day = datePicker.getDayOfMonth();
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-        Date selectedDate = calendar.getTime();
+        // Check if name, category, and difficulty are not empty
+        if (name.isEmpty() || category.isEmpty() || difficulty.isEmpty()) {
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        // Determine the quiz time category based on the selected date
-        String quizTimeCategory = determineQuizTimeCategory(selectedDate);
+        // Check if the start and end dates are selected
+        if (dateRangePickerDialog.getSelectedStartDate() == null || dateRangePickerDialog.getSelectedEndDate() == null) {
+            Toast.makeText(this, "Please select start and end dates", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        Quiz quiz = new Quiz(name, category, difficulty, selectedDate, quizTimeCategory);
+        // Get selected start and end dates
+        Date startDate = dateRangePickerDialog.getSelectedStartDate();
+        Date endDate = dateRangePickerDialog.getSelectedEndDate();
 
-        // Store the quiz in Firebase Realtime Database
-        quizzesReference.push().setValue(quiz).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(CreateQuizPage.this, "Quiz created successfully!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(CreateQuizPage.this, "Failed to create quiz!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+        // Calculate quiz time category
+        String quizTimeCategory = calculateQuizTimeCategory(startDate, endDate);
 
-    private String determineQuizTimeCategory(Date date) {
-        // Get current date
-        Calendar calendar = Calendar.getInstance();
-        Date currentDate = calendar.getTime();
-
-        // Add one day to the current date
-        calendar.add(Calendar.DATE, 1);
-        Date nextDay = calendar.getTime();
-
-        // Compare dates
-        if (date.after(nextDay)) {
-            return "Upcoming";
-        } else if (isSameDay(date, currentDate)) {
-            return "Ongoing";
-        } else {
-            return "Previous";
+        // Upload quiz data to Firebase
+        String quizId = quizzesReference.push().getKey(); // Generate unique key for the quiz
+        Quiz quiz = new Quiz(name, category, difficulty, startDate, endDate, quizTimeCategory);
+        if (quizId != null) {
+            quizzesReference.child(quizId).setValue(quiz)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(CreateQuizPage.this, "Quiz created successfully", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(CreateQuizPage.this, "Failed to create quiz", Toast.LENGTH_SHORT).show();
+                            Log.e("CreateQuizPage", "Failed to create quiz", e);
+                        }
+                    });
         }
     }
 
-    private boolean isSameDay(Date date1, Date date2) {
-        Calendar cal1 = Calendar.getInstance();
-        cal1.setTime(date1);
-        Calendar cal2 = Calendar.getInstance();
-        cal2.setTime(date2);
-        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-                cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
-                cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH);
+    // Method to calculate quiz time category based on start and end dates
+    private String calculateQuizTimeCategory(Date startDate, Date endDate) {
+        Date currentDate = Calendar.getInstance().getTime();
+
+        // If end date is before current date, it's previous
+        if (endDate.before(currentDate)) {
+            return "previous";
+        }
+
+        // If start date is after current date, it's upcoming
+        if (startDate.after(currentDate)) {
+            return "upcoming";
+        }
+
+        // If start date is before or equal to current date and end date is after current date, it's ongoing
+        return "ongoing";
     }
+
+
 
     interface QuizApi {
         @GET("api_category.php")
@@ -209,18 +256,21 @@ public class CreateQuizPage extends AppCompatActivity {
         }
     }
 
-    class Quiz {
+
+    public class Quiz {
         private String name;
         private String category;
         private String difficulty;
-        private Date date;
+        private Date startDate;
+        private Date endDate;
         private String quizTimeCategory;
 
-        public Quiz(String name, String category, String difficulty, Date date, String quizTimeCategory) {
+        public Quiz(String name, String category, String difficulty, Date startDate, Date endDate, String quizTimeCategory) {
             this.name = name;
             this.category = category;
             this.difficulty = difficulty;
-            this.date = date;
+            this.startDate = startDate;
+            this.endDate = endDate;
             this.quizTimeCategory = quizTimeCategory;
         }
 
@@ -249,12 +299,20 @@ public class CreateQuizPage extends AppCompatActivity {
             this.difficulty = difficulty;
         }
 
-        public Date getDate() {
-            return date;
+        public Date getStartDate() {
+            return startDate;
         }
 
-        public void setDate(Date date) {
-            this.date = date;
+        public void setStartDate(Date startDate) {
+            this.startDate = startDate;
+        }
+
+        public Date getEndDate() {
+            return endDate;
+        }
+
+        public void setEndDate(Date endDate) {
+            this.endDate = endDate;
         }
 
         public String getQuizTimeCategory() {
@@ -263,6 +321,21 @@ public class CreateQuizPage extends AppCompatActivity {
 
         public void setQuizTimeCategory(String quizTimeCategory) {
             this.quizTimeCategory = quizTimeCategory;
+        }
+
+        // Method to calculate the quiz time category
+        public void calculateQuizTimeCategory() {
+            Date currentDate = new Date();
+
+            if (endDate.after(currentDate)) {
+                if (startDate.after(currentDate)) {
+                    quizTimeCategory = "Upcoming";
+                } else {
+                    quizTimeCategory = "Ongoing";
+                }
+            } else {
+                quizTimeCategory = "Previous";
+            }
         }
     }
 }

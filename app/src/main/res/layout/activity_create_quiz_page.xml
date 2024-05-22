@@ -66,12 +66,28 @@
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <DatePicker
-            android:id="@+id/datecreatequiz"
-            android:layout_width="wrap_content"
+
+        <Button
+            android:id="@+id/btnSelectStart"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp" />
+            android:layout_marginTop="30dp"
+            android:text="Select Start Date"
+            android:textSize="20dp"
+            app:iconGravity="textEnd"
+            app:iconSize="50dp" />
+
+        <Button
+            android:id="@+id/btnSelectEnd"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="Select End Date"
+            android:textSize="20dp"
+            app:iconGravity="textEnd"
+            app:iconSize="50dp" />
 
         <Button
             android:id="@+id/makebtncreatequiz"

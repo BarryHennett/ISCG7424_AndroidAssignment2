@@ -63,7 +63,7 @@
 
 
             <Button
-                android:id="@+id/admin_btn_create_quiz"
+                android:id="@+id/admincreatequizbtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Add Quiz"/>

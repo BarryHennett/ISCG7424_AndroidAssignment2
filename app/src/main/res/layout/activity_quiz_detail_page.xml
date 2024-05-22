@@ -157,6 +157,17 @@
                 android:text="End Date"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
+        <Button
+            android:id="@+id/Playquizbtn"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:text="Play Quiz"
+            android:textSize="20dp"
+            app:iconGravity="textEnd"
+            app:iconSize="50dp" />
 
         <TextView
             android:textSize="30sp"

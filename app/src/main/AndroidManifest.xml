@@ -19,17 +19,18 @@
             android:name=".PlayQuizPage"
             android:exported="false" />
         <activity
-            android:name=".LoginPage"
+            android:name=".CreateQuizPage"
+
             android:exported="false" />
         <activity
             android:name=".AdminPage"
             android:exported="false" />
         <activity
-            android:name=".CreateQuizPage"
+            android:name=".UserPage"
 
             android:exported="false" />
         <activity
-            android:name=".UserPage"
+            android:name=".LoginPage"
 
             android:exported="true">
             <intent-filter>

@@ -17,7 +17,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(DataSnapshot quizSnapshot);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -72,7 +72,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
                     if (mListener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            mListener.onItemClick(position);
+                            mListener.onItemClick(quizSnapshots.get(position));
                         }
                     }
                 }

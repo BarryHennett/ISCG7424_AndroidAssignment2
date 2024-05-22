@@ -39,10 +39,10 @@
         android:layout_marginTop="40dp"
         android:textColor="#FFFFFF" />
 
-    <FrameLayout
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:id="@+id/play_quiz_quiz_container"
         android:layout_gravity="center"
         android:layout_marginTop="50dp" />
 

@@ -1,12 +1,18 @@
 package com.example.quizappassignment2;
 
+import static android.content.ContentValues.TAG;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -16,8 +22,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UserPage extends AppCompatActivity {
+public class UserPage extends AppCompatActivity implements QuizAdapter.OnItemClickListener {
 
+    private static final String ONGOING = "ongoing";
+    private static final String UPCOMING = "upcoming";
+    private static final String PARTICIPATED = "participated";
+    private static final String PREVIOUS = "previous";
+
+    private Button signOutButton;
     private RecyclerView recyclerView;
     private QuizAdapter quizAdapter;
     private List<DataSnapshot> allQuizzes;
@@ -36,11 +48,26 @@ public class UserPage extends AppCompatActivity {
         categorizedQuizzes = new HashMap<>();
         quizAdapter = new QuizAdapter(this, allQuizzes);
         recyclerView.setAdapter(quizAdapter);
-
-        fetchQuizzesFromFirebase();
+        quizAdapter.setOnItemClickListener(this); // Set item click listener
 
         tabLayout = findViewById(R.id.user_tab);
         setupTabs();
+
+        signOutButton = findViewById(R.id.userbtnsignout);
+
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Sign out the current user
+                FirebaseAuth.getInstance().signOut();
+                // Redirect to the login page
+                startActivity(new Intent(UserPage.this, LoginPage.class));
+                // Finish the current activity to prevent going back to it using the back button
+                finish();
+            }
+        });
+
+        fetchQuizzesFromFirebase();
     }
 
     private void setupTabs() {
@@ -58,19 +85,19 @@ public class UserPage extends AppCompatActivity {
                 switch (tab.getPosition()) {
                     case 0:
                         // Show ongoing quizzes
-                        displayQuizzes("ongoing");
+                        displayQuizzes(ONGOING);
                         break;
                     case 1:
                         // Show upcoming quizzes
-                        displayQuizzes("upcoming");
+                        displayQuizzes(UPCOMING);
                         break;
                     case 2:
                         // Show participated quizzes
-                        displayQuizzes("participated");
+                        displayQuizzes(PARTICIPATED);
                         break;
                     case 3:
                         // Show previous quizzes
-                        displayQuizzes("previous");
+                        displayQuizzes(PREVIOUS);
                         break;
                 }
             }
@@ -88,7 +115,8 @@ public class UserPage extends AppCompatActivity {
     }
 
     private void fetchQuizzesFromFirebase() {
-        FirebaseDatabase.getInstance().getReference("quizzes")
+        FirebaseDatabase.getInstance("https://iscg7427assignment2-default-rtdb.firebaseio.com/")
+                .getReference("quizzes")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -97,6 +125,11 @@ public class UserPage extends AppCompatActivity {
                         for (DataSnapshot quizSnapshot : dataSnapshot.getChildren()) {
                             allQuizzes.add(quizSnapshot);
                             categorizeQuiz(quizSnapshot);
+                        }
+                        // Debugging: Log the size of allQuizzes and categorizedQuizzes
+                        Log.d(TAG, "All Quizzes Size: " + allQuizzes.size());
+                        for (Map.Entry<String, List<DataSnapshot>> entry : categorizedQuizzes.entrySet()) {
+                            Log.d(TAG, "Category: " + entry.getKey() + ", Size: " + entry.getValue().size());
                         }
                         // Notify adapter after updating the list
                         quizAdapter.notifyDataSetChanged();
@@ -110,7 +143,7 @@ public class UserPage extends AppCompatActivity {
     }
 
     private void categorizeQuiz(DataSnapshot quizSnapshot) {
-        String category = quizSnapshot.child("category").getValue(String.class);
+        String category = quizSnapshot.child("quizTimeCategory").getValue(String.class);
         if (category != null) {
             List<DataSnapshot> quizzes = categorizedQuizzes.get(category);
             if (quizzes == null) {
@@ -126,5 +159,15 @@ public class UserPage extends AppCompatActivity {
         if (quizzes != null) {
             quizAdapter.setData(quizzes);
         }
+    }
+
+    // Handle item click
+    @Override
+    public void onItemClick(DataSnapshot quizSnapshot) {
+        // Handle item click here
+        String quizId = quizSnapshot.getKey(); // Get the key of the quiz
+        Intent intent = new Intent(this, QuizDetailPage.class);
+        intent.putExtra("quizId", quizId);
+        startActivity(intent);
     }
 }
