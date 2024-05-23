@@ -71,12 +71,12 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/admin_recyclerview"
+            android:id="@+id/adminrecyclerview"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            />
 
 
 

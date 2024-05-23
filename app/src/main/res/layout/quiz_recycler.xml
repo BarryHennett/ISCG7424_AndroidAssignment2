@@ -70,21 +70,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp">
 
-            <TextView
-                android:id="@+id/rec_txt_difficulty"
-                style="@style/TextAppearance.Material3.BodyMedium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Difficulty" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="300dp"
@@ -104,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="10" />
+                android:text="0" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="300dp"
@@ -118,7 +104,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Start Date" />
+                android:text="Start Date"
+                android:layout_marginBottom="20dp"/>
 
             <TextView
                 android:id="@+id/rec_txt_end_date"
@@ -130,15 +117,6 @@
                 android:text="End Date" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/rec_btn_view_details"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:text="View Details"
-            />
 
     </LinearLayout>
 

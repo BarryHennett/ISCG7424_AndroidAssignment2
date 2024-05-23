@@ -249,6 +249,7 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
     }
 
 
+
     private void uploadQuestionsToFirebase(String quizId, List<Question> questions) {
         DatabaseReference questionsRef = quizzesReference.child(quizId).child("questions");
         for (Question question : questions) {
@@ -369,9 +370,10 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
         private String name;
         private String category;
         private String difficulty;
-        private String startDate; // Change type to String
-        private String endDate; // Change type to String
+        private String startDate;
+        private String endDate;
         private String quizTimeCategory;
+        private int likes; // Add this field
 
         public Quiz(String name, String category, String difficulty, String startDate, String endDate, String quizTimeCategory) {
             this.name = name;
@@ -380,8 +382,10 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
             this.startDate = startDate;
             this.endDate = endDate;
             this.quizTimeCategory = quizTimeCategory;
+            this.likes = 0; // Initialize likes to 0
         }
 
+        // Getters and setters
         public String getName() {
             return name;
         }
@@ -428,6 +432,14 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
 
         public void setQuizTimeCategory(String quizTimeCategory) {
             this.quizTimeCategory = quizTimeCategory;
+        }
+
+        public int getLikes() {
+            return likes;
+        }
+
+        public void setLikes(int likes) {
+            this.likes = likes;
         }
     }
 }
