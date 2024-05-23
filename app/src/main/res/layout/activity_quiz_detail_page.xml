@@ -31,6 +31,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginTop="100dp"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
@@ -99,18 +100,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginTop="10dp">
 
             <TextView
-                android:id="@+id/difficultyquizdetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:width="100dp"
                 android:text="Difficulty:"
                 android:textColor="#FFFFFF"/>
 
-
+            <TextView
+                android:id="@+id/difficultyquizdetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Difficulty"
+                android:textColor="#FFFFFF"/>
         </LinearLayout>
 
         <LinearLayout
@@ -118,72 +122,86 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
             <TextView
-                android:id="@+id/likequizdetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Likes:"
                 android:textColor="#FFFFFF"/>
 
             <TextView
-                android:id="@+id/likeamtquizdetail"
+                android:id="@+id/likequizdetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:text="10"
                 android:textColor="#FFFFFF"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            >
+            android:layout_marginTop="10dp">
 
             <TextView
-                android:id="@+id/quiz_detail_txt_start_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:width="100dp"
-                android:text="Start Date"
+                android:text="Start Date:"
                 android:textColor="#FFFFFF"/>
 
             <TextView
-                android:id="@+id/quiz_detail_txt_end_date"
+                android:id="@+id/detailstartdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Start Date"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
                 android:width="100dp"
-                android:gravity="end"
+                android:text="End Date:"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:id="@+id/detailenddate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="End Date"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"/>
         </LinearLayout>
-        <Button
-            android:id="@+id/Playquizbtn"
-            style="@style/Widget.Material3.Button.ElevatedButton"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+        <LinearLayout
             android:layout_marginTop="30dp"
-            android:text="Play Quiz"
-            android:textSize="20dp"
-            app:iconGravity="textEnd"
-            app:iconSize="50dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:textSize="30sp"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:textAlignment="center"
-            android:text="Questions"
-            android:textColor="#FFFFFF" />
+            <Button
+                android:id="@+id/Playquizbtn"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="Play Quiz"
+                android:textSize="20dp"
+                app:iconGravity="textEnd"
+                app:iconSize="50dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/quiz_detail_recycler"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp" />
+            <Button
+                android:id="@+id/LikeQuizBTN"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginLeft="10dp"
+                android:text="Like Quiz"
+                android:textSize="15dp"
+                app:iconGravity="textEnd"
+                app:iconSize="50dp" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

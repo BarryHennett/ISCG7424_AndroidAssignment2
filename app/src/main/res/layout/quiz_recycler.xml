@@ -15,7 +15,7 @@
         android:background="@color/white">
 
         <TextView
-            android:id="@+id/rec_txt_name"
+            android:id="@+id/quiznamerec"
             style="@style/TextAppearance.MaterialComponents.Headline4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,19 +31,42 @@
 
             <TextView
                 style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Category:" />
 
             <TextView
-                android:id="@+id/rec_txt_category"
+                android:id="@+id/txtcategoryrec"
                 style="@style/TextAppearance.Material3.BodySmall"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:gravity="end"
                 android:text="Category" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Difficulty:" />
+
+            <TextView
+                android:id="@+id/txtdifficultyrec"
+                style="@style/TextAppearance.Material3.BodySmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="end"
+                android:text="Difficulty" />
 
         </LinearLayout>
 
@@ -61,28 +84,28 @@
                 android:layout_weight="1"
                 android:text="Difficulty" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end|center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Likes"
-                     />
-
-                <TextView
-                    android:id="@+id/rec_txt_like"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="10" />
-            </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Likes"
+                />
+
+            <TextView
+                android:id="@+id/rec_txt_like"
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="10" />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="300dp"
             android:layout_height="wrap_content"

@@ -18,9 +18,13 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +32,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public class CreateQuizPage extends AppCompatActivity implements DateRangePickerDialog.OnDateRangeSelectedListener {
 
@@ -38,6 +43,7 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference quizzesReference;
     private DateRangePickerDialog dateRangePickerDialog;
+    private Map<String, Integer> categoryMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +138,11 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
     private void populateCategoryDropdown(List<Category> categories) {
         ArrayAdapter<Category> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, categories);
         categoryDropdown.setAdapter(adapter);
+
+        categoryMap = new HashMap<>();
+        for (Category category : categories) {
+            categoryMap.put(category.getName(), category.getId());
+        }
     }
 
     @Override
@@ -147,6 +158,7 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
         // You can display the selected end date or perform any other action
         Toast.makeText(this, "End Date: " + endDate.toString(), Toast.LENGTH_SHORT).show();
     }
+
     private void createQuiz() {
         String name = editTextName.getText().toString();
         String category = categoryDropdown.getText().toString();
@@ -171,14 +183,58 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
         // Calculate quiz time category
         String quizTimeCategory = calculateQuizTimeCategory(startDate, endDate);
 
-        // Upload quiz data to Firebase
-        String quizId = quizzesReference.push().getKey(); // Generate unique key for the quiz
-        Quiz quiz = new Quiz(name, category, difficulty, startDate, endDate, quizTimeCategory);
+        // Generate unique key for the quiz
+        String quizId = quizzesReference.push().getKey();
+
+        // Fetch questions from the API
+        fetchQuestionsFromApi(name, category, difficulty, quizTimeCategory, startDate, endDate, quizId);
+    }
+
+    private void fetchQuestionsFromApi(String name, String category, String difficulty, String quizTimeCategory, Date startDate, Date endDate, String quizId) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://opentdb.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        QuizApi quizApi = retrofit.create(QuizApi.class);
+
+        Integer categoryId = categoryMap.get(category);
+        Call<QuestionResponse> call = quizApi.getQuestions(10, difficulty, categoryId);
+        call.enqueue(new Callback<QuestionResponse>() {
+            @Override
+            public void onResponse(Call<QuestionResponse> call, Response<QuestionResponse> response) {
+                if (response.isSuccessful()) {
+                    List<Question> questions = response.body().getResults();
+                    uploadQuizToFirebase(name, category, difficulty, startDate, endDate, quizTimeCategory, questions, quizId);
+                } else {
+                    Toast.makeText(CreateQuizPage.this, "Failed to fetch questions!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<QuestionResponse> call, Throwable t) {
+                Log.e("CreateQuizPage", "onFailure: ", t);
+                Toast.makeText(CreateQuizPage.this, "Error fetching questions", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void uploadQuizToFirebase(String name, String category, String difficulty, Date startDate, Date endDate, String quizTimeCategory, List<Question> questions, String quizId) {
+        // Format start date as DD/MM/YYYY
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String formattedStartDate = dateFormat.format(startDate);
+
+        // Format end date as DD/MM/YYYY
+        String formattedEndDate = dateFormat.format(endDate);
+
+        Quiz quiz = new Quiz(name, category, difficulty, formattedStartDate, formattedEndDate, quizTimeCategory);
+
         if (quizId != null) {
             quizzesReference.child(quizId).setValue(quiz)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+                            uploadQuestionsToFirebase(quizId, questions);
                             Toast.makeText(CreateQuizPage.this, "Quiz created successfully", Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -189,6 +245,17 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
                             Log.e("CreateQuizPage", "Failed to create quiz", e);
                         }
                     });
+        }
+    }
+
+
+    private void uploadQuestionsToFirebase(String quizId, List<Question> questions) {
+        DatabaseReference questionsRef = quizzesReference.child(quizId).child("questions");
+        for (Question question : questions) {
+            String questionId = questionsRef.push().getKey();
+            if (questionId != null) {
+                questionsRef.child(questionId).setValue(question);
+            }
         }
     }
 
@@ -210,11 +277,12 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
         return "ongoing";
     }
 
-
-
     interface QuizApi {
         @GET("api_category.php")
         Call<CategoryResponse> getCategories();
+
+        @GET("api.php")
+        Call<QuestionResponse> getQuestions(@Query("amount") int amount, @Query("difficulty") String difficulty, @Query("category") int category);
     }
 
     class CategoryResponse {
@@ -229,6 +297,18 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
         }
     }
 
+    class QuestionResponse {
+        private List<Question> results;
+
+        public List<Question> getResults() {
+            return results;
+        }
+
+        public void setResults(List<Question> results) {
+            this.results = results;
+        }
+    }
+
     class Category {
         private int id;
         private String name;
@@ -238,7 +318,6 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
             return name;
         }
 
-        // Getters and setters
         public int getId() {
             return id;
         }
@@ -256,16 +335,45 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
         }
     }
 
+    class Question {
+        private String question;
+        private List<String> incorrect_answers;
+        private String correct_answer;
 
-    public class Quiz {
+        public String getQuestion() {
+            return question;
+        }
+
+        public void setQuestion(String question) {
+            this.question = question;
+        }
+
+        public List<String> getIncorrectAnswers() {
+            return incorrect_answers;
+        }
+
+        public void setIncorrectAnswers(List<String> incorrect_answers) {
+            this.incorrect_answers = incorrect_answers;
+        }
+
+        public String getCorrectAnswer() {
+            return correct_answer;
+        }
+
+        public void setCorrectAnswer(String correct_answer) {
+            this.correct_answer = correct_answer;
+        }
+    }
+
+    class Quiz {
         private String name;
         private String category;
         private String difficulty;
-        private Date startDate;
-        private Date endDate;
+        private String startDate; // Change type to String
+        private String endDate; // Change type to String
         private String quizTimeCategory;
 
-        public Quiz(String name, String category, String difficulty, Date startDate, Date endDate, String quizTimeCategory) {
+        public Quiz(String name, String category, String difficulty, String startDate, String endDate, String quizTimeCategory) {
             this.name = name;
             this.category = category;
             this.difficulty = difficulty;
@@ -274,7 +382,6 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
             this.quizTimeCategory = quizTimeCategory;
         }
 
-        // Getters and setters
         public String getName() {
             return name;
         }
@@ -299,19 +406,19 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
             this.difficulty = difficulty;
         }
 
-        public Date getStartDate() {
+        public String getStartDate() {
             return startDate;
         }
 
-        public void setStartDate(Date startDate) {
+        public void setStartDate(String startDate) {
             this.startDate = startDate;
         }
 
-        public Date getEndDate() {
+        public String getEndDate() {
             return endDate;
         }
 
-        public void setEndDate(Date endDate) {
+        public void setEndDate(String endDate) {
             this.endDate = endDate;
         }
 
@@ -321,21 +428,6 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
 
         public void setQuizTimeCategory(String quizTimeCategory) {
             this.quizTimeCategory = quizTimeCategory;
-        }
-
-        // Method to calculate the quiz time category
-        public void calculateQuizTimeCategory() {
-            Date currentDate = new Date();
-
-            if (endDate.after(currentDate)) {
-                if (startDate.after(currentDate)) {
-                    quizTimeCategory = "Upcoming";
-                } else {
-                    quizTimeCategory = "Ongoing";
-                }
-            } else {
-                quizTimeCategory = "Previous";
-            }
         }
     }
 }

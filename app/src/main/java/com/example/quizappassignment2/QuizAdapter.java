@@ -61,9 +61,9 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
 
         public QuizViewHolder(@NonNull View itemView) {
             super(itemView);
-            nameTextView = itemView.findViewById(R.id.rec_txt_name);
-            categoryTextView = itemView.findViewById(R.id.rec_txt_category);
-            difficultyTextView = itemView.findViewById(R.id.rec_txt_difficulty);
+            nameTextView = itemView.findViewById(R.id.quiznamerec);
+            categoryTextView = itemView.findViewById(R.id.txtcategoryrec);
+            difficultyTextView = itemView.findViewById(R.id.txtdifficultyrec);
 
             // Set click listener for the entire item
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
         android:text="Log In / Sign up"
         android:textColor="#FFFFFF" />
 
@@ -41,12 +42,15 @@
         app:boxBackgroundColor="@color/white"
         app:endIconMode="password_toggle"
         app:errorEnabled="true"
-        app:startIconTint="@color/white">
+        app:startIconTint="@color/white"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:background="@drawable/edittext"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 

@@ -30,7 +30,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
             android:background="@drawable/edittext"
-            android:hint="Enter your name" />
+            android:hint="Enter Quiz Name" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
