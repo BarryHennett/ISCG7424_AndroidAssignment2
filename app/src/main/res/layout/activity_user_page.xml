@@ -18,13 +18,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center_vertical">
 
-        <Button
-            android:id="@+id/userbtnreturn"
-            style="@style/Widget.Material3.Button.ElevatedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Return"
-            />
+
 
         <Space
             android:layout_width="0dp"
