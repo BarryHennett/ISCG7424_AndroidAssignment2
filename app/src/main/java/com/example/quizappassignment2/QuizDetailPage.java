@@ -12,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -136,42 +139,81 @@ public class QuizDetailPage extends AppCompatActivity {
     }
 
     private void likeQuiz() {
-        quizRef.runTransaction(new Transaction.Handler() {
-            @NonNull
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Get the current user's ID
+
+        // Check if the user has already liked the quiz
+        quizRef.child("likedBy").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-                // Retrieve the current likes count
-                Long currentLikes = mutableData.child("likes").getValue(Long.class);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // User has already liked the quiz
+                    Toast.makeText(QuizDetailPage.this, "You have already liked this quiz", Toast.LENGTH_SHORT).show();
+                    // Set the button as selected and disable it
+                    Button likeQuizButton = findViewById(R.id.LikeQuizBTN);
+                    likeQuizButton.setSelected(true);
+                    likeQuizButton.setEnabled(false);
+                } else {
+                    // Update the likedBy list in the database
+                    quizRef.child("likedBy").child(userId).setValue(true)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    // Increment the likes count using a transaction
+                                    quizRef.runTransaction(new Transaction.Handler() {
+                                        @NonNull
+                                        @Override
+                                        public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                                            // Retrieve the current likes count
+                                            Long currentLikes = mutableData.child("likes").getValue(Long.class);
 
-                // If the likes count is null, initialize it to 0
-                if (currentLikes == null) {
-                    currentLikes = 0L;
+                                            // If the likes count is null, initialize it to 0
+                                            if (currentLikes == null) {
+                                                currentLikes = 0L;
+                                            }
+
+                                            // Increment the likes count by 1
+                                            Long updatedLikes = currentLikes + 1;
+
+                                            // Update the likes count in the database
+                                            mutableData.child("likes").setValue(updatedLikes);
+
+                                            // Return success
+                                            return Transaction.success(mutableData);
+                                        }
+
+                                        @Override
+                                        public void onComplete(@Nullable DatabaseError databaseError, boolean committed, @Nullable DataSnapshot dataSnapshot) {
+                                            if (committed) {
+                                                // Update the likes count TextView
+                                                TextView likesTextView = findViewById(R.id.likequizdetail);
+                                                long updatedLikes = dataSnapshot.child("likes").getValue(Long.class);
+                                                likesTextView.setText(String.valueOf(updatedLikes));
+
+                                                Toast.makeText(QuizDetailPage.this, "Liked!", Toast.LENGTH_SHORT).show();
+                                                // Set the button as selected and disable it
+                                                Button likeQuizButton = findViewById(R.id.LikeQuizBTN);
+                                                likeQuizButton.setSelected(true);
+                                                likeQuizButton.setEnabled(false);
+                                                hasLiked = true;
+                                            } else {
+                                                Toast.makeText(QuizDetailPage.this, "Failed to like quiz", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(QuizDetailPage.this, "Failed to like quiz", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 }
-
-                // Increment the likes count by 1
-                Long updatedLikes = currentLikes + 1;
-
-                // Update the likes count in the database
-                mutableData.child("likes").setValue(updatedLikes);
-
-                // Return success
-                return Transaction.success(mutableData);
             }
 
             @Override
-            public void onComplete(@Nullable DatabaseError databaseError, boolean committed, @Nullable DataSnapshot dataSnapshot) {
-                if (committed) {
-                    // Update the likes count TextView
-                    TextView likesTextView = findViewById(R.id.likequizdetail);
-                    long updatedLikes = dataSnapshot.child("likes").getValue(Long.class);
-                    likesTextView.setText(String.valueOf(updatedLikes));
-
-                    Toast.makeText(QuizDetailPage.this, "Liked!", Toast.LENGTH_SHORT).show();
-                    findViewById(R.id.LikeQuizBTN).setEnabled(false);
-                    hasLiked = true;
-                } else {
-                    Toast.makeText(QuizDetailPage.this, "Failed to like quiz", Toast.LENGTH_SHORT).show();
-                }
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(QuizDetailPage.this, "Failed to check like status", Toast.LENGTH_SHORT).show();
             }
         });
     }

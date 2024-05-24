@@ -82,24 +82,8 @@ public class UserPage extends AppCompatActivity implements QuizAdapter.OnItemCli
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 // Handle tab selection here
-                switch (tab.getPosition()) {
-                    case 0:
-                        // Show ongoing quizzes
-                        displayQuizzes(ONGOING);
-                        break;
-                    case 1:
-                        // Show upcoming quizzes
-                        displayQuizzes(UPCOMING);
-                        break;
-                    case 2:
-                        // Show participated quizzes
-                        displayQuizzes(PARTICIPATED);
-                        break;
-                    case 3:
-                        // Show previous quizzes
-                        displayQuizzes(PREVIOUS);
-                        break;
-                }
+                int tabPosition = tab.getPosition(); // Get the position of the selected tab
+                displayQuizzes(tabPosition); // Call the method here with the tab position
             }
 
             @Override
@@ -113,6 +97,7 @@ public class UserPage extends AppCompatActivity implements QuizAdapter.OnItemCli
             }
         });
     }
+
 
     private void fetchQuizzesFromFirebase() {
         FirebaseDatabase.getInstance("https://iscg7427assignment2-default-rtdb.firebaseio.com/")
@@ -133,6 +118,10 @@ public class UserPage extends AppCompatActivity implements QuizAdapter.OnItemCli
                         }
                         // Notify adapter after updating the list
                         quizAdapter.notifyDataSetChanged();
+
+                        // Initially display quizzes based on the selected tab
+                        int selectedTabPosition = tabLayout.getSelectedTabPosition();
+                        displayQuizzes(selectedTabPosition); // Call the method here with the tab position
                     }
 
                     @Override
@@ -141,6 +130,7 @@ public class UserPage extends AppCompatActivity implements QuizAdapter.OnItemCli
                     }
                 });
     }
+
 
     private void categorizeQuiz(DataSnapshot quizSnapshot) {
         String category = quizSnapshot.child("quizTimeCategory").getValue(String.class);
@@ -153,13 +143,35 @@ public class UserPage extends AppCompatActivity implements QuizAdapter.OnItemCli
             quizzes.add(quizSnapshot);
         }
     }
+    private void displayQuizzes(int tabPosition) {
+        String category;
+        switch (tabPosition) {
+            case 0:
+                category = ONGOING;
+                break;
+            case 1:
+                category = UPCOMING;
+                break;
+            case 2:
+                category = PARTICIPATED;
+                break;
+            case 3:
+                category = PREVIOUS;
+                break;
+            default:
+                category = ONGOING; // Default to ongoing quizzes
+                break;
+        }
+        Log.d(TAG, "Displaying quizzes for category: " + category); // Add this line for logging
 
-    private void displayQuizzes(String category) {
         List<DataSnapshot> quizzes = categorizedQuizzes.get(category);
         if (quizzes != null) {
             quizAdapter.setData(quizzes);
         }
     }
+
+
+
 
     // Handle item click
     @Override

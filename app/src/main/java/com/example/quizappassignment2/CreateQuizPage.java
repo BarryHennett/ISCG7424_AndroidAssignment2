@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -225,8 +226,6 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
     }
 
 
-
-
     private void uploadQuizToFirebase(String name, String category, String difficulty, Date startDate, Date endDate, String quizTimeCategory, List<Question> questions, String quizId) {
         // Format start date as DD/MM/YYYY
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -255,7 +254,6 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
                     });
         }
     }
-
 
 
     private void uploadQuestionsToFirebase(String quizId, List<Question> questions) {
@@ -382,7 +380,8 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
         private String startDate;
         private String endDate;
         private String quizTimeCategory;
-        private int likes; // Add this field
+        private int likes;
+        private List<String> likedBy; // List of user IDs who liked the quiz
 
         public Quiz(String name, String category, String difficulty, String startDate, String endDate, String quizTimeCategory) {
             this.name = name;
@@ -392,6 +391,7 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
             this.endDate = endDate;
             this.quizTimeCategory = quizTimeCategory;
             this.likes = 0; // Initialize likes to 0
+            this.likedBy = new ArrayList<>(); // Initialize the list of likedBy
         }
 
         // Getters and setters
@@ -449,6 +449,19 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
 
         public void setLikes(int likes) {
             this.likes = likes;
+        }
+
+        public List<String> getLikedBy() {
+            return likedBy;
+        }
+
+        public void setLikedBy(List<String> likedBy) {
+            this.likedBy = likedBy;
+        }
+
+        // Method to add a user to the likedBy list
+        public void addLikedBy(String userId) {
+            this.likedBy.add(userId);
         }
     }
 }
