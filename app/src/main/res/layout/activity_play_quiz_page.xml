@@ -43,7 +43,7 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="350dp"
-            android:layout_height="wrap_content"
+            android:layout_height="189dp"
             android:layout_gravity="center"
             android:layout_marginTop="50dp" />
 

@@ -199,7 +199,12 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
         QuizApi quizApi = retrofit.create(QuizApi.class);
 
         Integer categoryId = categoryMap.get(category);
-        Call<QuestionResponse> call = quizApi.getQuestions(10, difficulty, categoryId);
+        Call<QuestionResponse> call;
+        if (categoryId != null) {
+            call = quizApi.getQuestions(10, difficulty, categoryId, "multiple");
+        } else {
+            call = quizApi.getQuestions(10, difficulty, null, "multiple");
+        }
         call.enqueue(new Callback<QuestionResponse>() {
             @Override
             public void onResponse(Call<QuestionResponse> call, Response<QuestionResponse> response) {
@@ -218,6 +223,9 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
             }
         });
     }
+
+
+
 
     private void uploadQuizToFirebase(String name, String category, String difficulty, Date startDate, Date endDate, String quizTimeCategory, List<Question> questions, String quizId) {
         // Format start date as DD/MM/YYYY
@@ -283,8 +291,9 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
         Call<CategoryResponse> getCategories();
 
         @GET("api.php")
-        Call<QuestionResponse> getQuestions(@Query("amount") int amount, @Query("difficulty") String difficulty, @Query("category") int category);
+        Call<QuestionResponse> getQuestions(@Query("amount") int amount, @Query("difficulty") String difficulty, @Query("category") Integer category, @Query("type") String type);
     }
+
 
     class CategoryResponse {
         private List<Category> trivia_categories;

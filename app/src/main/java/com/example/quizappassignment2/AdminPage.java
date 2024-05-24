@@ -55,16 +55,8 @@ public class AdminPage extends AppCompatActivity implements QuizAdapter.OnItemCl
         // Set item click listener for RecyclerView
         quizAdapter.setOnItemClickListener(this);
 
-        Button returnButton = findViewById(R.id.admin_btn_return);
         Button signOutButton = findViewById(R.id.admin_btn_sign_out);
         Button addQuizButton = findViewById(R.id.admincreatequizbtn);
-
-        returnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
 
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override

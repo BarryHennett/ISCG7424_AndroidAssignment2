@@ -19,16 +19,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
-import com.example.quizappassignment2.CreateQuizPage;
-
 
 public class QuizDetailPage extends AppCompatActivity {
 
     private static final String TAG = "QuizDetailPage";
     private DatabaseReference quizRef;
-    private DatabaseReference userLikesRef;
     private String quizId;
-    private String userId = "sampleUserId"; // Replace with actual user ID
     private boolean hasLiked = false;
 
     @Override
@@ -47,23 +43,6 @@ public class QuizDetailPage extends AppCompatActivity {
 
         // Retrieve quiz details from Firebase
         quizRef = FirebaseDatabase.getInstance().getReference("quizzes").child(quizId);
-        userLikesRef = FirebaseDatabase.getInstance().getReference("user_likes").child(userId).child(quizId);
-
-        // Check if the user has already liked this quiz
-        userLikesRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                hasLiked = snapshot.exists();
-                if (hasLiked) {
-                    findViewById(R.id.LikeQuizBTN).setEnabled(false);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Failed to check if user has liked quiz: " + error.getMessage());
-            }
-        });
 
         quizRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -137,8 +116,10 @@ public class QuizDetailPage extends AppCompatActivity {
         playQuizButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Start the PlayQuizPage activity
-                startActivity(new Intent(QuizDetailPage.this, PlayQuizPage.class));
+                // Start the PlayQuizPage activity and pass the quiz ID
+                Intent intent = new Intent(QuizDetailPage.this, PlayQuizPage.class);
+                intent.putExtra("quizId", quizId);
+                startActivity(intent);
             }
         });
 
@@ -180,10 +161,6 @@ public class QuizDetailPage extends AppCompatActivity {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, boolean committed, @Nullable DataSnapshot dataSnapshot) {
                 if (committed) {
-                    // Record that the user has liked this quiz
-                    userLikesRef.setValue(true);
-                    hasLiked = true;
-
                     // Update the likes count TextView
                     TextView likesTextView = findViewById(R.id.likequizdetail);
                     long updatedLikes = dataSnapshot.child("likes").getValue(Long.class);
@@ -191,6 +168,7 @@ public class QuizDetailPage extends AppCompatActivity {
 
                     Toast.makeText(QuizDetailPage.this, "Liked!", Toast.LENGTH_SHORT).show();
                     findViewById(R.id.LikeQuizBTN).setEnabled(false);
+                    hasLiked = true;
                 } else {
                     Toast.makeText(QuizDetailPage.this, "Failed to like quiz", Toast.LENGTH_SHORT).show();
                 }
