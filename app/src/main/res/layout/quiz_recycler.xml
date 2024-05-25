@@ -67,10 +67,7 @@
                 android:layout_weight="3"
                 android:gravity="end"
                 android:text="Difficulty" />
-
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_width="300dp"
@@ -85,7 +82,7 @@
                 />
 
             <TextView
-                android:id="@+id/rec_txt_like"
+                android:id="@+id/liketxt"
                 style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,7 +96,7 @@
             android:layout_marginTop="10dp">
 
             <TextView
-                android:id="@+id/rec_txt_start_date"
+                android:id="@+id/startdatetxt"
                 style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -108,7 +105,7 @@
                 android:layout_marginBottom="20dp"/>
 
             <TextView
-                android:id="@+id/rec_txt_end_date"
+                android:id="@+id/enddatetxt"
                 style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -116,8 +113,5 @@
                 android:gravity="end"
                 android:text="End Date" />
         </LinearLayout>
-
-
     </LinearLayout>
-
 </com.google.android.material.card.MaterialCardView>

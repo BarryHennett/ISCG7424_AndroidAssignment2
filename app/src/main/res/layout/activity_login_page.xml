@@ -25,13 +25,12 @@
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
         android:textColorHint="#FF000000"
-
         android:background="@drawable/edittext"
         android:hint="Enter your Email" />
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/login_txt_password"
+        android:id="@+id/loginpasswordtxt"
         style="?attr/textInputFilledStyle"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
@@ -55,7 +54,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/login_btn_login"
+        android:id="@+id/loginbtn"
         style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
@@ -67,7 +66,7 @@
         app:iconSize="50dp" />
 
     <Button
-        android:id="@+id/login_btn_sign_up"
+        android:id="@+id/signupbtnlgn"
         style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="350dp"
         android:layout_height="wrap_content"

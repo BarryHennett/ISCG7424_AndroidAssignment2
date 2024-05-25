@@ -8,7 +8,6 @@
     android:orientation="vertical"
     tools:context=".UserPage">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,8 +16,6 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
         android:gravity="center_vertical">
-
-
 
         <Space
             android:layout_width="0dp"
@@ -32,8 +29,8 @@
             android:layout_height="wrap_content"
             android:text="Sign Out"
             android:layout_gravity="end" />
-
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,11 +45,7 @@
             android:layout_gravity="center"
             android:text="User"
             android:textColor="#FFFFFF" />
-
-
     </LinearLayout>
-
-
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/user_tab"
@@ -60,10 +53,31 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:background="@drawable/edittext"
-        >
+        android:background="@drawable/edittext">
 
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_ongoing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ongoing" />
 
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_upcoming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upcoming" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_participated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Participated" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_previous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Previous" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -72,5 +86,4 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp" />
-
 </LinearLayout>

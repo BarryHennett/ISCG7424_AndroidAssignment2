@@ -29,14 +29,20 @@ public class QuizDetailPage extends AppCompatActivity {
     private DatabaseReference quizRef;
     private String quizId;
     private boolean hasLiked = false;
+    private boolean isPlayable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_detail_page);
 
-        // Retrieve quiz ID from intent extras
+        // Retrieve quiz ID and playability flag from intent extras
         quizId = getIntent().getStringExtra("quizId");
+        isPlayable = getIntent().getBooleanExtra("isPlayable", false);
+
+        // Retrieve the score if available
+        int score = getIntent().getIntExtra("score", -1);
+
         if (quizId == null) {
             Log.e(TAG, "Quiz ID is null");
             Toast.makeText(this, "Invalid quiz ID", Toast.LENGTH_SHORT).show();
@@ -83,6 +89,12 @@ public class QuizDetailPage extends AppCompatActivity {
                         startDateTextView.setText(startDate);
                         endDateTextView.setText(endDate);
 
+                        // Update the score if available
+                        if (score >= 0) {
+                            TextView scoreTextView = findViewById(R.id.detailscore);
+                            scoreTextView.setText(score + "/10");
+                        }
+
                     } catch (Exception e) {
                         Log.e(TAG, "Error retrieving quiz details: " + e.getMessage());
                         Toast.makeText(QuizDetailPage.this, "Failed to load quiz details", Toast.LENGTH_SHORT).show();
@@ -116,15 +128,20 @@ public class QuizDetailPage extends AppCompatActivity {
 
         // Set click listener for the Play Quiz button
         Button playQuizButton = findViewById(R.id.Playquizbtn);
-        playQuizButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start the PlayQuizPage activity and pass the quiz ID
-                Intent intent = new Intent(QuizDetailPage.this, PlayQuizPage.class);
-                intent.putExtra("quizId", quizId);
-                startActivity(intent);
-            }
-        });
+        if (isPlayable) {
+            playQuizButton.setVisibility(View.VISIBLE);
+            playQuizButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Start the PlayQuizPage activity and pass the quiz ID
+                    Intent intent = new Intent(QuizDetailPage.this, PlayQuizPage.class);
+                    intent.putExtra("quizId", quizId);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            playQuizButton.setVisibility(View.GONE);
+        }
 
         // Set click listener for the Like Quiz button
         Button likeQuizButton = findViewById(R.id.LikeQuizBTN);

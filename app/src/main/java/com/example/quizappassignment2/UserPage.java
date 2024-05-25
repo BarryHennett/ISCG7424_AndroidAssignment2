@@ -51,53 +51,32 @@ public class UserPage extends AppCompatActivity implements QuizAdapter.OnItemCli
         quizAdapter.setOnItemClickListener(this); // Set item click listener
 
         tabLayout = findViewById(R.id.user_tab);
-        setupTabs();
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int tabPosition = tab.getPosition();
+                displayQuizzes(tabPosition);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
 
         signOutButton = findViewById(R.id.userbtnsignout);
-
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Sign out the current user
                 FirebaseAuth.getInstance().signOut();
-                // Redirect to the login page
                 startActivity(new Intent(UserPage.this, LoginPage.class));
-                // Finish the current activity to prevent going back to it using the back button
                 finish();
             }
         });
 
         fetchQuizzesFromFirebase();
     }
-
-    private void setupTabs() {
-        // Add tabs to the TabLayout
-        tabLayout.addTab(tabLayout.newTab().setText("Ongoing"));
-        tabLayout.addTab(tabLayout.newTab().setText("Upcoming"));
-        tabLayout.addTab(tabLayout.newTab().setText("Participated"));
-        tabLayout.addTab(tabLayout.newTab().setText("Previous"));
-
-        // Set a listener for tab selection
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                // Handle tab selection here
-                int tabPosition = tab.getPosition(); // Get the position of the selected tab
-                displayQuizzes(tabPosition); // Call the method here with the tab position
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                // Handle unselected tabs if needed
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                // Handle tab reselection if needed
-            }
-        });
-    }
-
 
     private void fetchQuizzesFromFirebase() {
         FirebaseDatabase.getInstance("https://iscg7427assignment2-default-rtdb.firebaseio.com/")
@@ -111,17 +90,13 @@ public class UserPage extends AppCompatActivity implements QuizAdapter.OnItemCli
                             allQuizzes.add(quizSnapshot);
                             categorizeQuiz(quizSnapshot);
                         }
-                        // Debugging: Log the size of allQuizzes and categorizedQuizzes
                         Log.d(TAG, "All Quizzes Size: " + allQuizzes.size());
                         for (Map.Entry<String, List<DataSnapshot>> entry : categorizedQuizzes.entrySet()) {
                             Log.d(TAG, "Category: " + entry.getKey() + ", Size: " + entry.getValue().size());
                         }
-                        // Notify adapter after updating the list
                         quizAdapter.notifyDataSetChanged();
-
-                        // Initially display quizzes based on the selected tab
                         int selectedTabPosition = tabLayout.getSelectedTabPosition();
-                        displayQuizzes(selectedTabPosition); // Call the method here with the tab position
+                        displayQuizzes(selectedTabPosition);
                     }
 
                     @Override
@@ -130,7 +105,6 @@ public class UserPage extends AppCompatActivity implements QuizAdapter.OnItemCli
                     }
                 });
     }
-
 
     private void categorizeQuiz(DataSnapshot quizSnapshot) {
         String category = quizSnapshot.child("quizTimeCategory").getValue(String.class);
@@ -143,6 +117,7 @@ public class UserPage extends AppCompatActivity implements QuizAdapter.OnItemCli
             quizzes.add(quizSnapshot);
         }
     }
+
     private void displayQuizzes(int tabPosition) {
         String category;
         switch (tabPosition) {
@@ -159,27 +134,27 @@ public class UserPage extends AppCompatActivity implements QuizAdapter.OnItemCli
                 category = PREVIOUS;
                 break;
             default:
-                category = ONGOING; // Default to ongoing quizzes
+                category = ONGOING;
                 break;
         }
-        Log.d(TAG, "Displaying quizzes for category: " + category); // Add this line for logging
+        Log.d(TAG, "Displaying quizzes for category: " + category);
 
         List<DataSnapshot> quizzes = categorizedQuizzes.get(category);
         if (quizzes != null) {
             quizAdapter.setData(quizzes);
+        } else {
+            quizAdapter.setData(new ArrayList<DataSnapshot>());
         }
     }
 
-
-
-
-    // Handle item click
     @Override
     public void onItemClick(DataSnapshot quizSnapshot) {
-        // Handle item click here
-        String quizId = quizSnapshot.getKey(); // Get the key of the quiz
+        String quizId = quizSnapshot.getKey();
+        String category = quizSnapshot.child("quizTimeCategory").getValue(String.class);
+        boolean isPlayable = ONGOING.equals(category);
         Intent intent = new Intent(this, QuizDetailPage.class);
         intent.putExtra("quizId", quizId);
+        intent.putExtra("isPlayable", isPlayable);
         startActivity(intent);
     }
 }

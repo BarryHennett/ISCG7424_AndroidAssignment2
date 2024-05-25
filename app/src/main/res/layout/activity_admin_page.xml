@@ -21,21 +21,18 @@
             android:layout_marginTop="20dp"
             android:gravity="center_vertical">
 
-
-
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
             <Button
-                android:id="@+id/admin_btn_sign_out"
+                android:id="@+id/signoutbtnadmin"
                 style="@style/Widget.Material3.Button.ElevatedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sign Out"
                 android:layout_gravity="end" />
-
         </LinearLayout>
 
 
@@ -48,20 +45,17 @@
             android:textColor="#FFFFFF"
             android:layout_marginTop="50dp"/>
 
-
         <LinearLayout
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp">
 
-
             <Button
                 android:id="@+id/admincreatequizbtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Add Quiz"/>
-
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -72,9 +66,5 @@
             android:layout_marginTop="20dp"
             />
 
-
-
     </LinearLayout>
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

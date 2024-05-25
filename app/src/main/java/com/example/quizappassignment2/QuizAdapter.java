@@ -73,9 +73,9 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
             nameTextView = itemView.findViewById(R.id.quiznamerec);
             categoryTextView = itemView.findViewById(R.id.txtcategoryrec);
             difficultyTextView = itemView.findViewById(R.id.txtdifficultyrec);
-            startDateTextView = itemView.findViewById(R.id.rec_txt_start_date);
-            endDateTextView = itemView.findViewById(R.id.rec_txt_end_date);
-            likesTextView = itemView.findViewById(R.id.rec_txt_like); // Initialize TextView for likes
+            startDateTextView = itemView.findViewById(R.id.startdatetxt);
+            endDateTextView = itemView.findViewById(R.id.enddatetxt);
+            likesTextView = itemView.findViewById(R.id.liketxt); // Initialize TextView for likes
 
             // Set click listener for the entire item
             itemView.setOnClickListener(new View.OnClickListener() {

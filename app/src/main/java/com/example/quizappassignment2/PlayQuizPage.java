@@ -1,5 +1,6 @@
 package com.example.quizappassignment2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -127,9 +130,36 @@ public class PlayQuizPage extends AppCompatActivity {
         }
     }
 
-
     private void showFinalScore() {
-        Toast.makeText(this, "Quiz completed. Your score: " + score + " out of 10", Toast.LENGTH_LONG).show();
+        // Update Firebase quizTimeCategory to "participated"
+        DatabaseReference quizRef = FirebaseDatabase.getInstance().getReference("quizzes").child(quizId).child("quizTimeCategory");
+        quizRef.setValue("participated");
+
+        // Pass the score back to QuizDetailPage
+        Intent intent = new Intent(PlayQuizPage.this, QuizDetailPage.class);
+        intent.putExtra("quizId", quizId);
+        intent.putExtra("score", score);
+        intent.putExtra("isPlayable", false); // Ensure the Play button is hidden after completing the quiz
+        startActivity(intent);
+        finish();
+    }
+
+
+    private void updateQuizParticipation() {
+        DatabaseReference quizRef = FirebaseDatabase.getInstance().getReference("quizzes").child(quizId).child("quizTimeCategory");
+        quizRef.setValue("participated")
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(PlayQuizPage.this, "Quiz participation updated", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(PlayQuizPage.this, "Failed to update quiz participation", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private static class QuestionPagerAdapter extends FragmentPagerAdapter {
@@ -240,6 +270,7 @@ public class PlayQuizPage extends AppCompatActivity {
 
         public Question() {
         }
+
         public String getQuestion() {
             return question;
         }

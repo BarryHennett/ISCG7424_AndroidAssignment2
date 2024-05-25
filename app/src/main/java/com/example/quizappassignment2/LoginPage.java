@@ -33,10 +33,10 @@ public class LoginPage extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         emailEditText = findViewById(R.id.editTextemail);
-        TextInputLayout passwordLayout = findViewById(R.id.login_txt_password);
+        TextInputLayout passwordLayout = findViewById(R.id.loginpasswordtxt);
         EditText passwordEditText = passwordLayout.getEditText();
-        loginButton = findViewById(R.id.login_btn_login);
-        signUpButton = findViewById(R.id.login_btn_sign_up);
+        loginButton = findViewById(R.id.loginbtn);
+        signUpButton = findViewById(R.id.signupbtnlgn);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
