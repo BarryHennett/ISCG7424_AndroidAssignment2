@@ -20,7 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -70,14 +72,12 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
                     String name = dataSnapshot.child("name").getValue(String.class);
                     String category = dataSnapshot.child("category").getValue(String.class);
                     String difficulty = dataSnapshot.child("difficulty").getValue(String.class);
-                    String startDate = dataSnapshot.child("startDate").getValue(String.class);
-                    String endDate = dataSnapshot.child("endDate").getValue(String.class);
+
                     // Set data to fields
                     editTextnamecreatequiz.setText(name);
                     autoCompleteCategory.setText(category);
                     autoCompleteDifficulty.setText(difficulty);
-                    btnSelectStart.setText(startDate);
-                    btnSelectEnd.setText(endDate);
+
                 } else {
                     // Quiz not found
                     Toast.makeText(UpdateQuizPage.this, "Quiz not found", Toast.LENGTH_SHORT).show();
@@ -117,15 +117,11 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
     @Override
     public void onStartDateSelected(Date startDate) {
         selectedStartDate = startDate;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        btnSelectStart.setText(sdf.format(startDate));
     }
 
     @Override
     public void onEndDateSelected(Date endDate) {
         selectedEndDate = endDate;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        btnSelectEnd.setText(sdf.format(endDate));
     }
 
 
@@ -143,12 +139,26 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
         updatedData.put("name", updatedName);
         updatedData.put("category", updatedCategory);
         updatedData.put("difficulty", updatedDifficulty);
+
+        // Format start date as DD/MM/YYYY
         if (selectedStartDate != null) {
-            updatedData.put("startDate", selectedStartDate.toString());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            String formattedStartDate = dateFormat.format(selectedStartDate);
+            updatedData.put("startDate", formattedStartDate);
         }
+
+        // Format end date as DD/MM/YYYY
         if (selectedEndDate != null) {
-            updatedData.put("endDate", selectedEndDate.toString());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            String formattedEndDate = dateFormat.format(selectedEndDate);
+            updatedData.put("endDate", formattedEndDate);
         }
+
+        // Recalculate quizTimeCategory based on the new dates
+        String updatedQuizTimeCategory = calculateQuizTimeCategory(selectedStartDate, selectedEndDate);
+
+        // Add updated quizTimeCategory to the HashMap
+        updatedData.put("quizTimeCategory", updatedQuizTimeCategory);
 
         // Perform the update operation
         quizRef.updateChildren(updatedData)
@@ -157,7 +167,8 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
                     public void onSuccess(Void aVoid) {
                         // Quiz updated successfully
                         Toast.makeText(UpdateQuizPage.this, "Quiz updated successfully", Toast.LENGTH_SHORT).show();
-                        finish(); // Finish activity and return to previous screen
+                        Intent intent = new Intent(UpdateQuizPage.this, AdminPage.class);
+                        startActivity(intent);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -167,5 +178,23 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
                         Toast.makeText(UpdateQuizPage.this, "Failed to update quiz: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    // Method to calculate quiz time category based on start and end dates
+    private String calculateQuizTimeCategory(Date startDate, Date endDate) {
+        Date currentDate = Calendar.getInstance().getTime();
+
+        // If end date is before current date, it's previous
+        if (endDate.before(currentDate)) {
+            return "previous";
+        }
+
+        // If start date is after current date, it's upcoming
+        if (startDate.after(currentDate)) {
+            return "upcoming";
+        }
+
+        // If start date is before or equal to current date and end date is after current date, it's ongoing
+        return "ongoing";
     }
 }
