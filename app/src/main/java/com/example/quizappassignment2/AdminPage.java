@@ -84,4 +84,5 @@ public class AdminPage extends AppCompatActivity implements QuizAdapter.OnItemCl
         intent.putExtra("quizId", quizSnapshot.getKey());
         startActivity(intent);
     }
+
 }
