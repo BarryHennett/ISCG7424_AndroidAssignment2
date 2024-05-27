@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgroundimg"
+    android:orientation="vertical"
+    tools:context=".LoginPage">
+
+    <TextView
+        style="@style/TextAppearance.MaterialComponents.Headline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:text="Log In / Sign up"
+        android:textColor="#FFFFFF" />
+
+    <EditText
+        android:id="@+id/editTextemail"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:textColorHint="#FF000000"
+        android:background="@drawable/edittext"
+        android:hint="Enter your Email" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/loginpasswordtxt"
+        style="?attr/textInputFilledStyle"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:hint="Password"
+        android:textColorHint="#FF000000"
+        app:boxBackgroundColor="@color/white"
+        app:endIconMode="password_toggle"
+        app:errorEnabled="true"
+        app:startIconTint="@color/white"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:background="@drawable/edittext"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/loginbtn"
+        style="@style/Widget.Material3.Button.ElevatedButton"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:text="Login"
+        android:textSize="20dp"
+        app:iconGravity="textEnd"
+        app:iconSize="50dp" />
+
+    <Button
+        android:id="@+id/signupbtnlgn"
+        style="@style/Widget.Material3.Button.ElevatedButton"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:text="Sign Up"
+        android:textSize="20dp"
+        app:iconGravity="textEnd"
+        app:iconSize="50dp" />
+
+</LinearLayout>

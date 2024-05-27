@@ -1,0 +1,134 @@
+[
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\mipmap-xhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\xml_backup_rules.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\xml\\backup_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\drawable_btnstyle.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\drawable\\btnstyle.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\layout_fragment_question.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\layout\\fragment_question.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\mipmap-xhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\layout_item_question.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\layout\\item_question.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\mipmap-mdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\xml\\data_extraction_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\drawable_backgroundimg.jpg.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\drawable\\backgroundimg.jpg"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\layout_dialog_date_range_picker.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\layout\\dialog_date_range_picker.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\layout_activity_login_page.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\layout\\activity_login_page.xml"
+    },
+    {
+        "merged": "com.example.quizappassignment2.app-debug-39:/layout_activity_quiz_detail_page.xml.flat",
+        "source": "com.example.quizappassignment2.app-main-41:/layout/activity_quiz_detail_page.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\mipmap-hdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\mipmap-hdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\mipmap-mdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\layout_activity_create_quiz_page.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\layout\\activity_create_quiz_page.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\drawable_edittext.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\drawable\\edittext.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\layout_activity_user_page.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\layout\\activity_user_page.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\layout_quiz_recycler.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\layout\\quiz_recycler.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\layout_activity_register_page.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\layout\\activity_register_page.xml"
+    },
+    {
+        "merged": "com.example.quizappassignment2.app-debug-39:/layout_activity_update_quiz_page.xml.flat",
+        "source": "com.example.quizappassignment2.app-main-41:/layout/activity_update_quiz_page.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\layout_activity_quiz_detail_page.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\layout\\activity_quiz_detail_page.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\mipmap-xxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\mipmap-xxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\layout_activity_play_quiz_page.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\layout\\activity_play_quiz_page.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\layout_activity_admin_page.xml.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\layout\\activity_admin_page.xml"
+    },
+    {
+        "merged": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-debug-39:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\harra\\.gradle\\daemon\\8.4\\com.example.quizappassignment2.app-main-41:\\mipmap-xxxhdpi\\ic_launcher.webp"
+    }
+]
