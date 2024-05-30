@@ -33,7 +33,6 @@ public class DateRangePickerDialog extends Dialog {
         btnSelectStart = findViewById(R.id.btnSelectStart);
         btnSelectEnd = findViewById(R.id.btnSelectEnd);
 
-        // Set click listeners for the buttons
         btnSelectStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +52,6 @@ public class DateRangePickerDialog extends Dialog {
         });
     }
 
-    // Helper method to extract Date object from DatePicker
     private Date getDateFromDatePicker(DatePicker datePicker) {
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
@@ -63,7 +61,6 @@ public class DateRangePickerDialog extends Dialog {
         return calendar.getTime();
     }
 
-    // Getter methods for retrieving selected start and end dates
     public Date getSelectedStartDate() {
         return selectedStartDate;
     }
@@ -72,12 +69,10 @@ public class DateRangePickerDialog extends Dialog {
         return selectedEndDate;
     }
 
-    // Setter method for setting the date range selected listener
     public void setOnDateRangeSelectedListener(OnDateRangeSelectedListener listener) {
         this.listener = listener;
     }
 
-    // Interface for communicating date range selection to the caller
     public interface OnDateRangeSelectedListener {
         void onStartDateSelected(Date startDate);
         void onEndDateSelected(Date endDate);

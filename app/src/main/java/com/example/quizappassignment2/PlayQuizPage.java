@@ -55,7 +55,6 @@ public class PlayQuizPage extends AppCompatActivity {
         adapter = new QuestionPagerAdapter(getSupportFragmentManager(), new ArrayList<>());
         viewPager.setAdapter(adapter);
 
-        // Retrieve the quiz ID from the intent
         quizId = getIntent().getStringExtra("quizId");
         if (quizId == null) {
             Toast.makeText(this, "Invalid quiz ID", Toast.LENGTH_SHORT).show();
@@ -82,7 +81,8 @@ public class PlayQuizPage extends AppCompatActivity {
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(PlayQuizPage.this, UserPage.class);
+                startActivity(intent);
             }
         });
     }
@@ -115,7 +115,7 @@ public class PlayQuizPage extends AppCompatActivity {
         }
         adapter.setFragments(fragments);
         adapter.notifyDataSetChanged();
-        viewPager.setAdapter(adapter); // Update the ViewPager's adapter
+        viewPager.setAdapter(adapter);
     }
 
     private void checkAnswer() {
@@ -131,15 +131,14 @@ public class PlayQuizPage extends AppCompatActivity {
     }
 
     private void showFinalScore() {
-        // Update Firebase quizTimeCategory to "participated"
         DatabaseReference quizRef = FirebaseDatabase.getInstance().getReference("quizzes").child(quizId).child("quizTimeCategory");
         quizRef.setValue("participated");
 
-        // Pass the score back to QuizDetailPage
+        //  Show score on QuizDetailPage
         Intent intent = new Intent(PlayQuizPage.this, QuizDetailPage.class);
         intent.putExtra("quizId", quizId);
         intent.putExtra("score", score);
-        intent.putExtra("isPlayable", false); // Ensure the Play button is hidden after completing the quiz
+        intent.putExtra("isPlayable", false); // Play button not shown after play
         startActivity(intent);
         finish();
     }
@@ -222,18 +221,14 @@ public class PlayQuizPage extends AppCompatActivity {
                 List<String> options = new ArrayList<>(question.getIncorrectAnswers());
                 options.add(correctAnswer);
 
-                // Shuffle options to randomize their order
                 Collections.shuffle(options);
 
-                // Ensure options list has at least four elements
                 if (options.size() >= 4) {
                     option1.setText(options.get(0));
                     option2.setText(options.get(1));
                     option3.setText(options.get(2));
                     option4.setText(options.get(3));
                 } else {
-                    // Handle the case where there are not enough options
-                    // This could be logging an error, displaying a message, or any other appropriate action
                     Toast.makeText(getContext(), "Not enough options for question", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -256,7 +251,6 @@ public class PlayQuizPage extends AppCompatActivity {
             } else if (option4.isChecked()) {
                 return option4.getText().toString().equals(correctAnswer);
             }
-            // If no option is selected, return false
             return false;
         }
 

@@ -82,11 +82,9 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
             }
         });
 
-        // Initialize and set up the date range picker dialog
         dateRangePickerDialog = new DateRangePickerDialog(this);
         dateRangePickerDialog.setOnDateRangeSelectedListener(this);
 
-        // Set click listeners for the date range selection buttons
         btnSelectStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,15 +146,11 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
 
     @Override
     public void onStartDateSelected(Date startDate) {
-        // Handle start date selection
-        // You can display the selected start date or perform any other action
         Toast.makeText(this, "Start Date: " + startDate.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onEndDateSelected(Date endDate) {
-        // Handle end date selection
-        // You can display the selected end date or perform any other action
         Toast.makeText(this, "End Date: " + endDate.toString(), Toast.LENGTH_SHORT).show();
     }
 
@@ -171,7 +165,7 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
             return;
         }
 
-        // Check if the start and end dates are selected
+        // Check start and end dates are selected
         if (dateRangePickerDialog.getSelectedStartDate() == null || dateRangePickerDialog.getSelectedEndDate() == null) {
             Toast.makeText(this, "Please select start and end dates", Toast.LENGTH_SHORT).show();
             return;
@@ -181,13 +175,13 @@ public class CreateQuizPage extends AppCompatActivity implements DateRangePicker
         Date startDate = dateRangePickerDialog.getSelectedStartDate();
         Date endDate = dateRangePickerDialog.getSelectedEndDate();
 
-        // Calculate quiz time category
+        // Get quiz time category
         String quizTimeCategory = calculateQuizTimeCategory(startDate, endDate);
 
-        // Generate unique key for the quiz
+        // Get Key for the quiz
         String quizId = quizzesReference.push().getKey();
 
-        // Fetch questions from the API
+        // Fetch questions from API
         fetchQuestionsFromApi(name, category, difficulty, quizTimeCategory, startDate, endDate, quizId);
     }
 

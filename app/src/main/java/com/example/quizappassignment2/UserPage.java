@@ -48,7 +48,7 @@ public class UserPage extends AppCompatActivity implements QuizAdapter.OnItemCli
         categorizedQuizzes = new HashMap<>();
         quizAdapter = new QuizAdapter(this, allQuizzes);
         recyclerView.setAdapter(quizAdapter);
-        quizAdapter.setOnItemClickListener(this); // Set item click listener
+        quizAdapter.setOnItemClickListener(this);
 
         tabLayout = findViewById(R.id.user_tab);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

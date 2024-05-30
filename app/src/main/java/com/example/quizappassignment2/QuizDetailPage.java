@@ -224,17 +224,14 @@ public class QuizDetailPage extends AppCompatActivity {
 
     private void setupAdminUI() {
         Log.d(TAG, "Setting up admin UI");
-        // Hide the like button for admin
         Button likeQuizButton = findViewById(R.id.LikeQuizBTN);
         likeQuizButton.setVisibility(View.GONE);
 
-        // Show admin-specific buttons
         Button updateQuizButton = findViewById(R.id.updateQuizBTN);
         updateQuizButton.setVisibility(View.VISIBLE);
         updateQuizButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Start the UpdateQuizPage activity and pass the quiz ID
                 Intent intent = new Intent(QuizDetailPage.this, UpdateQuizPage.class);
                 intent.putExtra("quizId", quizId);
                 startActivity(intent);
@@ -253,46 +250,37 @@ public class QuizDetailPage extends AppCompatActivity {
 
 
     private void likeQuiz() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Get the current user's ID
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // Add the user to the likedBy list in the database
         quizRef.child("likedBy").child(userId).setValue(true)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        // Increment the likes count using a transaction
                         quizRef.runTransaction(new Transaction.Handler() {
                             @NonNull
                             @Override
                             public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-                                // Retrieve the current likes count
                                 Long currentLikes = mutableData.child("likes").getValue(Long.class);
 
-                                // If the likes count is null, initialize it to 0
                                 if (currentLikes == null) {
                                     currentLikes = 0L;
                                 }
 
-                                // Increment the likes count by 1
                                 Long updatedLikes = currentLikes + 1;
 
-                                // Update the likes count in the database
                                 mutableData.child("likes").setValue(updatedLikes);
 
-                                // Return success
                                 return Transaction.success(mutableData);
                             }
 
                             @Override
                             public void onComplete(@Nullable DatabaseError databaseError, boolean committed, @Nullable DataSnapshot dataSnapshot) {
                                 if (committed) {
-                                    // Update the likes count TextView
                                     TextView likesTextView = findViewById(R.id.likequizdetail);
                                     long updatedLikes = dataSnapshot.child("likes").getValue(Long.class);
                                     likesTextView.setText(String.valueOf(updatedLikes));
 
                                     Toast.makeText(QuizDetailPage.this, "Liked!", Toast.LENGTH_SHORT).show();
-                                    // Update button state
                                     Button likeQuizButton = findViewById(R.id.LikeQuizBTN);
                                     likeQuizButton.setText("Unlike");
                                     hasLiked = true;
@@ -312,46 +300,37 @@ public class QuizDetailPage extends AppCompatActivity {
     }
 
     private void unlikeQuiz() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Get the current user's ID
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Get the user's ID
 
-        // Remove the user from the likedBy list in the database
         quizRef.child("likedBy").child(userId).removeValue()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        // Decrement the likes count using a transaction
                         quizRef.runTransaction(new Transaction.Handler() {
                             @NonNull
                             @Override
                             public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-                                // Retrieve the current likes count
                                 Long currentLikes = mutableData.child("likes").getValue(Long.class);
 
-                                // If the likes count is null, initialize it to 0
                                 if (currentLikes == null) {
                                     currentLikes = 0L;
                                 }
 
-                                // Decrement the likes count by 1
                                 Long updatedLikes = currentLikes - 1;
 
-                                // Update the likes count in the database
                                 mutableData.child("likes").setValue(updatedLikes);
 
-                                // Return success
                                 return Transaction.success(mutableData);
                             }
 
                             @Override
                             public void onComplete(@Nullable DatabaseError databaseError, boolean committed, @Nullable DataSnapshot dataSnapshot) {
                                 if (committed) {
-                                    // Update the likes count TextView
                                     TextView likesTextView = findViewById(R.id.likequizdetail);
                                     long updatedLikes = dataSnapshot.child("likes").getValue(Long.class);
                                     likesTextView.setText(String.valueOf(updatedLikes));
 
                                     Toast.makeText(QuizDetailPage.this, "Unliked!", Toast.LENGTH_SHORT).show();
-                                    // Update button state
                                     Button likeQuizButton = findViewById(R.id.LikeQuizBTN);
                                     likeQuizButton.setText("Like");
                                     hasLiked = false;
@@ -371,23 +350,19 @@ public class QuizDetailPage extends AppCompatActivity {
     }
 
     private void deleteQuiz() {
-        // Get a reference to the quiz node in the Firebase Realtime Database
         DatabaseReference quizRef = FirebaseDatabase.getInstance().getReference().child("quizzes").child(quizId);
 
-        // Remove the quiz data from the database
         quizRef.removeValue()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        // Quiz deleted successfully
                         Toast.makeText(QuizDetailPage.this, "Quiz deleted", Toast.LENGTH_SHORT).show();
-                        finish(); // Finish activity and return to the previous screen
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        // Failed to delete quiz
                         Toast.makeText(QuizDetailPage.this, "Failed to delete quiz: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });

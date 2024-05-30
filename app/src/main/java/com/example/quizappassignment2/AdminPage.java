@@ -34,7 +34,7 @@ public class AdminPage extends AppCompatActivity implements QuizAdapter.OnItemCl
         recyclerViewQuizzes.setAdapter(quizAdapter);
         recyclerViewQuizzes.setLayoutManager(new LinearLayoutManager(this));
 
-        // Set up Firebase listener to update quiz data
+        // Firebase update quiz
         DatabaseReference quizzesRef = FirebaseDatabase.getInstance().getReference("quizzes");
         quizzesRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -52,7 +52,6 @@ public class AdminPage extends AppCompatActivity implements QuizAdapter.OnItemCl
             }
         });
 
-        // Set item click listener for RecyclerView
         quizAdapter.setOnItemClickListener(this);
 
         Button signOutButton = findViewById(R.id.signoutbtnadmin);
@@ -75,11 +74,8 @@ public class AdminPage extends AppCompatActivity implements QuizAdapter.OnItemCl
         });
     }
 
-    // Handle item click for RecyclerView
     @Override
     public void onItemClick(DataSnapshot quizSnapshot) {
-        // Handle item click here
-        // For example, navigate to the details page
         Intent intent = new Intent(AdminPage.this, QuizDetailPage.class);
         intent.putExtra("quizId", quizSnapshot.getKey());
         startActivity(intent);

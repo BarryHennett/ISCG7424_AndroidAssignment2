@@ -72,12 +72,9 @@ public class LoginPage extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            // Check user role and redirect accordingly
                             checkUserRole(user);
                         } else {
-                            // If sign in fails, display a message to the user.
                             Toast.makeText(LoginPage.this, "Authentication failed: " + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -94,7 +91,6 @@ public class LoginPage extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             checkUserRole(user);
                         } else {
-                            // If sign up fails, display a message to the user.
                             Toast.makeText(LoginPage.this, "Authentication failed: " + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -104,19 +100,13 @@ public class LoginPage extends AppCompatActivity {
 
 
     private void checkUserRole(FirebaseUser user) {
-        // Check if the user is signed in (not null)
         if (user != null) {
-            // Check user's email or any other attribute to determine if they are an admin
-            // For demonstration, let's assume admin@example.com is an admin
             String adminEmail = "admin@email.com";
             if (user.getEmail().equals(adminEmail)) {
-                // Admin user, redirect to admin page
                 startActivity(new Intent(LoginPage.this, AdminPage.class));
             } else {
-                // Regular user, redirect to user page
                 startActivity(new Intent(LoginPage.this, UserPage.class));
             }
-            // Finish the login activity to prevent going back to it using the back button
             finish();
         }
     }

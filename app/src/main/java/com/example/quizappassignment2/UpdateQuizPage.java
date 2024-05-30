@@ -49,7 +49,6 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
         updatequizbtn = findViewById(R.id.updatequizbtn);
         cancelcreatequiz = findViewById(R.id.cancelcreatequiz);
 
-        // Get the quiz ID from the intent
         quizId = getIntent().getStringExtra("quizId");
         if (quizId == null) {
             Toast.makeText(this, "Invalid quiz ID", Toast.LENGTH_SHORT).show();
@@ -57,29 +56,23 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
             return;
         }
 
-        // Get current user ID
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // Get a reference to the "quizzes" node in Firebase Realtime Database
         quizzesRef = FirebaseDatabase.getInstance().getReference().child("quizzes");
 
-        // Query the database to find the quiz associated with the given quizId
         quizzesRef.child(quizId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Retrieve quiz data
                     String name = dataSnapshot.child("name").getValue(String.class);
                     String category = dataSnapshot.child("category").getValue(String.class);
                     String difficulty = dataSnapshot.child("difficulty").getValue(String.class);
 
-                    // Set data to fields
                     editTextnamecreatequiz.setText(name);
                     autoCompleteCategory.setText(category);
                     autoCompleteDifficulty.setText(difficulty);
 
                 } else {
-                    // Quiz not found
                     Toast.makeText(UpdateQuizPage.this, "Quiz not found", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -87,21 +80,16 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle error
                 Toast.makeText(UpdateQuizPage.this, "Error loading quiz: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Set click listener for the start date button
         btnSelectStart.setOnClickListener(v -> launchDateRangePickerDialog(true));
 
-        // Set click listener for the end date button
         btnSelectEnd.setOnClickListener(v -> launchDateRangePickerDialog(false));
 
-        // Set click listener for the update button
         updatequizbtn.setOnClickListener(v -> updateQuiz());
 
-        // Set click listener for the cancel button
         cancelcreatequiz.setOnClickListener(v -> {
             Intent intent = new Intent(UpdateQuizPage.this, AdminPage.class);
             startActivity(intent);
@@ -126,15 +114,12 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
 
 
     private void updateQuiz() {
-        // Get updated data from fields
         String updatedName = editTextnamecreatequiz.getText().toString();
         String updatedCategory = autoCompleteCategory.getText().toString();
         String updatedDifficulty = autoCompleteDifficulty.getText().toString();
 
-        // Get the reference to the quiz node in the Firebase Realtime Database
         DatabaseReference quizRef = FirebaseDatabase.getInstance().getReference().child("quizzes").child(quizId);
 
-        // Create a HashMap to hold the updated data
         Map<String, Object> updatedData = new HashMap<>();
         updatedData.put("name", updatedName);
         updatedData.put("category", updatedCategory);
@@ -154,18 +139,14 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
             updatedData.put("endDate", formattedEndDate);
         }
 
-        // Recalculate quizTimeCategory based on the new dates
         String updatedQuizTimeCategory = calculateQuizTimeCategory(selectedStartDate, selectedEndDate);
 
-        // Add updated quizTimeCategory to the HashMap
         updatedData.put("quizTimeCategory", updatedQuizTimeCategory);
 
-        // Perform the update operation
         quizRef.updateChildren(updatedData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        // Quiz updated successfully
                         Toast.makeText(UpdateQuizPage.this, "Quiz updated successfully", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(UpdateQuizPage.this, AdminPage.class);
                         startActivity(intent);
@@ -174,27 +155,22 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        // Failed to update quiz
                         Toast.makeText(UpdateQuizPage.this, "Failed to update quiz: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    // Method to calculate quiz time category based on start and end dates
     private String calculateQuizTimeCategory(Date startDate, Date endDate) {
         Date currentDate = Calendar.getInstance().getTime();
 
-        // If end date is before current date, it's previous
         if (endDate.before(currentDate)) {
             return "previous";
         }
 
-        // If start date is after current date, it's upcoming
         if (startDate.after(currentDate)) {
             return "upcoming";
         }
 
-        // If start date is before or equal to current date and end date is after current date, it's ongoing
         return "ongoing";
     }
 }
