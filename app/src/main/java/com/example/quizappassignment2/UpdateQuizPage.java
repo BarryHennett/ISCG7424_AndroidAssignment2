@@ -2,6 +2,7 @@ package com.example.quizappassignment2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,20 +22,28 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Date;
-import java.text.SimpleDateFormat;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+
 public class UpdateQuizPage extends AppCompatActivity implements DateRangePickerDialog.OnDateRangeSelectedListener {
 
     private EditText editTextnamecreatequiz;
     private AutoCompleteTextView autoCompleteCategory, autoCompleteDifficulty;
     private Button btnSelectStart, btnSelectEnd, updatequizbtn, cancelcreatequiz;
-
     private DatabaseReference quizzesRef;
     private String quizId;
     private Date selectedStartDate, selectedEndDate;
+    private Map<String, Integer> categoryMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +65,10 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
             return;
         }
 
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         quizzesRef = FirebaseDatabase.getInstance().getReference().child("quizzes");
+
+        fetchCategoriesFromApi();
+        setupDifficultyDropdown();
 
         quizzesRef.child(quizId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -67,11 +77,24 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
                     String name = dataSnapshot.child("name").getValue(String.class);
                     String category = dataSnapshot.child("category").getValue(String.class);
                     String difficulty = dataSnapshot.child("difficulty").getValue(String.class);
+                    String startDate = dataSnapshot.child("startDate").getValue(String.class);
+                    String endDate = dataSnapshot.child("endDate").getValue(String.class);
 
                     editTextnamecreatequiz.setText(name);
-                    autoCompleteCategory.setText(category);
-                    autoCompleteDifficulty.setText(difficulty);
+                    autoCompleteCategory.setText(category, false);
+                    autoCompleteDifficulty.setText(difficulty, false);
 
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    try {
+                        if (startDate != null) {
+                            selectedStartDate = sdf.parse(startDate);
+                        }
+                        if (endDate != null) {
+                            selectedEndDate = sdf.parse(endDate);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     Toast.makeText(UpdateQuizPage.this, "Quiz not found", Toast.LENGTH_SHORT).show();
                     finish();
@@ -85,7 +108,6 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
         });
 
         btnSelectStart.setOnClickListener(v -> launchDateRangePickerDialog(true));
-
         btnSelectEnd.setOnClickListener(v -> launchDateRangePickerDialog(false));
 
         updatequizbtn.setOnClickListener(v -> updateQuiz());
@@ -112,7 +134,6 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
         selectedEndDate = endDate;
     }
 
-
     private void updateQuiz() {
         String updatedName = editTextnamecreatequiz.getText().toString();
         String updatedCategory = autoCompleteCategory.getText().toString();
@@ -125,39 +146,28 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
         updatedData.put("category", updatedCategory);
         updatedData.put("difficulty", updatedDifficulty);
 
-        // Format start date as DD/MM/YYYY
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
         if (selectedStartDate != null) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             String formattedStartDate = dateFormat.format(selectedStartDate);
             updatedData.put("startDate", formattedStartDate);
         }
 
-        // Format end date as DD/MM/YYYY
         if (selectedEndDate != null) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             String formattedEndDate = dateFormat.format(selectedEndDate);
             updatedData.put("endDate", formattedEndDate);
         }
 
         String updatedQuizTimeCategory = calculateQuizTimeCategory(selectedStartDate, selectedEndDate);
-
         updatedData.put("quizTimeCategory", updatedQuizTimeCategory);
 
         quizRef.updateChildren(updatedData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(UpdateQuizPage.this, "Quiz updated successfully", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(UpdateQuizPage.this, AdminPage.class);
-                        startActivity(intent);
-                    }
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(UpdateQuizPage.this, "Quiz updated successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(UpdateQuizPage.this, AdminPage.class);
+                    startActivity(intent);
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(UpdateQuizPage.this, "Failed to update quiz: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                .addOnFailureListener(e -> Toast.makeText(UpdateQuizPage.this, "Failed to update quiz: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     private String calculateQuizTimeCategory(Date startDate, Date endDate) {
@@ -172,5 +182,91 @@ public class UpdateQuizPage extends AppCompatActivity implements DateRangePicker
         }
 
         return "ongoing";
+    }
+
+    private void setupDifficultyDropdown() {
+        String[] difficulties = new String[]{"easy", "medium", "hard"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, difficulties);
+        autoCompleteDifficulty.setAdapter(adapter);
+    }
+
+    private void fetchCategoriesFromApi() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://opentdb.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        QuizApi quizApi = retrofit.create(QuizApi.class);
+
+        Call<CategoryResponse> call = quizApi.getCategories();
+        call.enqueue(new Callback<CategoryResponse>() {
+            @Override
+            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+                if (response.isSuccessful()) {
+                    List<Category> categories = response.body().getTriviaCategories();
+                    populateCategoryDropdown(categories);
+                } else {
+                    Toast.makeText(UpdateQuizPage.this, "Failed to fetch categories!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CategoryResponse> call, Throwable t) {
+                Toast.makeText(UpdateQuizPage.this, "Error fetching categories", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void populateCategoryDropdown(List<Category> categories) {
+        ArrayAdapter<Category> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, categories);
+        autoCompleteCategory.setAdapter(adapter);
+
+        categoryMap = new HashMap<>();
+        for (Category category : categories) {
+            categoryMap.put(category.getName(), category.getId());
+        }
+    }
+
+    interface QuizApi {
+        @GET("api_category.php")
+        Call<CategoryResponse> getCategories();
+    }
+
+    class CategoryResponse {
+        private List<Category> trivia_categories;
+
+        public List<Category> getTriviaCategories() {
+            return trivia_categories;
+        }
+
+        public void setTriviaCategories(List<Category> trivia_categories) {
+            this.trivia_categories = trivia_categories;
+        }
+    }
+
+    class Category {
+        private int id;
+        private String name;
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 }
